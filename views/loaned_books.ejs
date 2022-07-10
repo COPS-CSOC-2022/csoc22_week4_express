@@ -1,0 +1,33 @@
+<html>
+  <%- include ("./partials/header.ejs") %>
+  <body>
+    <h3>Loaned Books list</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Genre</th>
+          <th scope="col">Borrow Date</th>
+          <th scope="col">Return Buttons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% books.forEach(function(copy,i){%>
+        <tr>
+          <th scope="row"><%= i %></th>
+          <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
+          <td><%= copy.book.author %></td>
+          <td><%= copy.book.genre %></td>
+          <td><%= copy.borrow_date %></td>
+          <td>
+            <!-- TODO: Create a Return book tag that is used for returning the book -->
+          </td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+  </body>
+</html>

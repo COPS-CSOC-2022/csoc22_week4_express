@@ -1,0 +1,56 @@
+<html>
+  <%- include ("./partials/header.ejs") %>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <%- include ("./partials/sidebar.ejs") %>
+        <div class="col-sm-10">
+          <h3>Books list</h3>
+
+          <form class="row" action="/books/search-book" method="POST">
+            <div class="col-sm-3">
+              Title: <input type="text" name="title" id="title" />
+            </div>
+            <div class="col-sm-3">
+              Author: <input type="text" name="author" id="author" />
+            </div>
+            <div class="col-sm-3">
+              Genre: <input type="text" name="genre" id="genre" />
+            </div>
+            <div class="col-sm-12 pt-2">
+              <button id="search_button" class="btn btn-primary" type="submit">
+                Search
+              </button>
+            </div>
+          </form>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Rating</th>
+                <th scope="col">MRP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% books.forEach(function(book,i){%>
+              <tr>
+                <th scope="row"><%=i %></th>
+                <td><a href="/book/<%=book.id%>/"><%= book.title %></a></td>
+                <td><%=book.author%></td>
+                <td><%=book.genre%></td>
+                <td><%=book.rating%></td>
+                <td><%=book.mrp%></td>
+              </tr>
+              <%})%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
