@@ -1,23 +1,25 @@
-var getLogin = (req, res) => {
-  //TODO: render login page
+// TODO: render register page
+const getRegister = (req, res) => {
+  res.render("users/register", { title: "Register" });
 };
 
-var postLogin = (req, res) => {
+const postRegister = (req, res) => {
+  // TODO: Register user to User db using passport
+  //On successful authentication, redirect to next page
+};
+
+//TODO: render login page
+const getLogin = (req, res) => {
+  res.render("users/login", { title: "Login" });
+};
+
+const postLogin = (req, res) => {
   // TODO: authenticate using passport
   //On successful authentication, redirect to next page
 };
 
-var logout = (req, res) => {
+const logout = (req, res) => {
   // TODO: write code to logout user and redirect back to the page
-};
-
-var getRegister = (req, res) => {
-  // TODO: render register page
-};
-
-var postRegister = (req, res) => {
-  // TODO: Register user to User db using passport
-  //On successful authentication, redirect to next page
 };
 
 module.exports = {

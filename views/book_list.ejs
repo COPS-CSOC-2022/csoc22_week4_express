@@ -1,11 +1,11 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+  <%- include ("./partials/header.ejs") %> <%-
+  include("./partials/navebar.ejs")%>
 
   <body>
     <div class="container-fluid">
       <div class="row">
-        <%- include ("./partials/sidebar.ejs") %>
-        <div class="col-sm-10">
+        <div class="col-sm-12">
           <h3>Books list</h3>
 
           <form class="row" action="/books/search-book" method="POST">
@@ -18,7 +18,7 @@
             <div class="col-sm-3">
               Genre: <input type="text" name="genre" id="genre" />
             </div>
-            <div class="col-sm-12 pt-2">
+            <div class="col-sm-3">
               <button id="search_button" class="btn btn-primary" type="submit">
                 Search
               </button>
@@ -39,8 +39,8 @@
             <tbody>
               <% books.forEach(function(book,i){%>
               <tr>
-                <th scope="row"><%=i %></th>
-                <td><a href="/book/<%=book.id%>/"><%= book.title %></a></td>
+                <th scope="row"><%= i+1 %></th>
+                <td><a href="/book/<%=book._id%>"><%= book.title %></a></td>
                 <td><%=book.author%></td>
                 <td><%=book.genre%></td>
                 <td><%=book.rating%></td>
