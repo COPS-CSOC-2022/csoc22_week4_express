@@ -1,8 +1,12 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+<%- include ("./partials/header.ejs") %>
 
   <body>
     <%- include ("./partials/sidebar.ejs") %>
-    <h3>Welcome to the library. This is your homepage.</h3>
+      <%- include('./partials/alerts') %>
+        <h3 class="welcome">
+          Welcome to the library. <br>
+          Use the navigation to go to different sections.</h3>
   </body>
+
 </html>
