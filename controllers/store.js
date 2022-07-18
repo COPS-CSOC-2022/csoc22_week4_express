@@ -94,7 +94,7 @@ var issueBook = (req, res) => {
                         });
 
                     Bookcopy.update({book: foundBook},{status: avail}, (err)=> {console.log(err)});
-                    res.redirect('/books');
+                    res.redirect('/books/loaned');
                 }else {
                         res.send("Book Unavailable");
                     }
