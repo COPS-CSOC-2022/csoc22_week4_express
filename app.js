@@ -30,6 +30,7 @@ passport.deserializeUser(User.deserializeUser()); // used to deserialize the use
 app.use(express.urlencoded({ extended: true })); //parses incoming url encoded data from forms to json objects
 app.set("view engine", "ejs");
 
+
 //THIS MIDDLEWARE ALLOWS US TO ACCESS THE LOGGED IN USER AS currentUser in all views
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
@@ -37,6 +38,11 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.connect("mongodb+srv://Ayush:dUQoSohWJJF24MnR@cluster0.tnmw7.mongodb.net/LibraryDB");
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -54,11 +60,13 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn,
  store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-store.issueBook);
+middleware.isLoggedIn,
+store.issueBook); 
 
 app.post("/books/search-book", store.searchBooks);
 

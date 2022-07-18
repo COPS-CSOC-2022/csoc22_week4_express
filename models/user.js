@@ -4,10 +4,12 @@ var	passportLocal=require("passport-local-mongoose");
 var userSchema=new mongoose.Schema({
 
 	//TODO: DEFINE USERNAME AND PASSSWORD ATTRIBUTES
-
+    username: String,
+    password: String,
 
     loaned_books:[
         //TODO: embed reference to id's of book copies loaned by this particular user in this array
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }
     ]
 })
 userSchema.plugin(passportLocal);
