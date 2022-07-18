@@ -9,7 +9,7 @@ var bookCopySchema=new mongoose.Schema({
  //borrower: //embed reference to id of user who has borrowed it 
  book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
  status: Boolean,
- borrow_data: Date,
+ borrow_data: String,
  borrower: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 })
 module.exports=mongoose.model("Bookcopy",bookCopySchema);

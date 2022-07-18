@@ -72,6 +72,10 @@ app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
 
+app.post("/books/return",
+middleware.isLoggedIn,
+store.returnBook);
+
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
 If you need to add any new route add it here and define its controller

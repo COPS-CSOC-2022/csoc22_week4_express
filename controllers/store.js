@@ -73,16 +73,26 @@ var issueBook = (req, res) => {
                         (err) => { if (err) console.log(err) }
                     );
                     
-                    User.updateOne({username: req.user.username},{$push:{loaned_books: foundBook._id}})
                    
                     let avail = (quant) ? true : false;
+                    var date = new Date();
+                    var datetime = date.toLocaleString();
+                    console.log(datetime);
                     const issuedBook = new Bookcopy({
                         book: foundBook._id,
                         status: avail,
-                        borrow_data: new Date(),
+                        borrow_data: datetime,
                         borrower: req.user._id
                     });
                     issuedBook.save();
+                    User.findOneAndUpdate({username: req.user.username},
+                        {$push:{loaned_books: issuedBook}},
+                        {safe: true, upsert: true, new: true},
+                        (err, found)=>{
+                          if(err)
+                              console.log(err);
+                        });
+
                     Bookcopy.update({book: foundBook},{status: avail}, (err)=> {console.log(err)});
                     res.redirect('/books');
                 }else {
@@ -93,6 +103,40 @@ var issueBook = (req, res) => {
         }
     });
 
+}
+
+var returnBook = (req, res) => {
+    Book.findOne({ _id: req.body.bid }, function (err, foundBook){
+        if (!err) {
+            if (foundBook) {
+                
+                    console.log("issue:\n",foundBook);
+                    var quant = foundBook.available_copies + 1;
+                    Book.updateOne(
+                        { _id: req.body.bid }, 
+                        { available_copies: quant }, 
+                        (err) => { if (err) console.log(err) }
+                    );
+                    console.log("date: " , req.body.b_date, " id: ", req.user._id);
+                    Bookcopy.findOneAndDelete({borrow_data: req.body.b_date, borrower: req.user._id },
+                        (err1,found)=>{
+                        if(!err1)
+                            User.findOneAndUpdate({username: req.user.username},
+                                {$pull:{loaned_books: found.id}},
+                                {new: true},
+                                (err, found)=>{
+                                  if(err)
+                                      console.log(err);
+                                });});
+                    Bookcopy.update({book: foundBook},{status: true}, (err)=> {console.log(err)});
+                    res.redirect('/books/loaned');
+                }else {
+                        res.send("NO Such Book");
+                    }
+            }
+        
+        
+    });
 }
 
 var searchBooks = (req, res) => {
@@ -120,5 +164,6 @@ module.exports = {
     getBook,
     getLoanedBooks,
     issueBook,
+    returnBook,
     searchBooks
 }

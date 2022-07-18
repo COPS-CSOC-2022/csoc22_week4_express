@@ -1,5 +1,6 @@
 var mongoose=require("mongoose");
 var	passportLocal=require("passport-local-mongoose");
+const Bookcopy = require("./bookCopy");
 //DEFINING THE USER MODEL
 var userSchema=new mongoose.Schema({
 
@@ -9,7 +10,7 @@ var userSchema=new mongoose.Schema({
 
     loaned_books:[
         //TODO: embed reference to id's of book copies loaned by this particular user in this array
-        { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Bookcopy' }
     ]
 })
 userSchema.plugin(passportLocal);
