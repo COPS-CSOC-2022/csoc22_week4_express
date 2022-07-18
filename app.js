@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 var mongoose = require("mongoose");
@@ -38,11 +39,13 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+const USERNAME=process.env.USER;
+const PASS=process.env.PASS;
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb+srv://Ayush:dUQoSohWJJF24MnR@cluster0.tnmw7.mongodb.net/LibraryDB");
+mongoose.connect("mongodb+srv://"+USERNAME+":"+PASS+"@cluster0.tnmw7.mongodb.net/LibraryDB");
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
