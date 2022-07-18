@@ -7,7 +7,7 @@ var getLogin = (req, res) => {
   if(req.isAuthenticated())
   res.redirect('/');
   else{
-    res.render('login');
+    res.render('login',{title: "Login"});
   }
 };
 
@@ -40,7 +40,7 @@ var logout = (req, res) => {
 
 var getRegister = (req, res) => {
   // TODO: render register page
-  res.render('register');
+  res.render('register',{title: "Register"});
 };
 
 var postRegister = (req, res) => {

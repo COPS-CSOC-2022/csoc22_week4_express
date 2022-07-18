@@ -1,12 +1,11 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <h1>Welcome, Again!!!</h1>
-    <%- include ("./partials/sidebar.ejs") %>
-    <h2>Login</h2>
+    <%- include ("./partials/header.ejs") %>
+
+<body>
+     <h2>Login</h2>
+     <div class="row">
+        <%- include ("./partials/sidebar.ejs") %>
+      </div>
     <form action="/login" method="POST">
         <label for="username">User Name:</label>
         <input type="text" name="username" id="username" placeholder="Username" />
@@ -16,8 +15,5 @@
         <br>
         <button type="submit" >Submit</button>
     </form>
-</head>
-<body>
-    
 </body>
 </html>
