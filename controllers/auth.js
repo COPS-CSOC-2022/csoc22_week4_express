@@ -1,5 +1,6 @@
 var getLogin = (req, res) => {
   //TODO: render login page
+  res.render("login", { title: "Login" });
 };
 
 var postLogin = (req, res) => {
@@ -9,10 +10,13 @@ var postLogin = (req, res) => {
 
 var logout = (req, res) => {
   // TODO: write code to logout user and redirect back to the page
+  req.logout();
+  res.redirect("/login");
 };
 
 var getRegister = (req, res) => {
   // TODO: render register page
+  res.render("register", { title: "Register" });
 };
 
 var postRegister = (req, res) => {
@@ -25,5 +29,5 @@ module.exports = {
   postLogin,
   logout,
   getRegister,
-  postRegister,
+  postRegister
 };
