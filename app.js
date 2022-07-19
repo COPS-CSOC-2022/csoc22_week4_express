@@ -37,6 +37,25 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+const connectDB = async () => {
+  try {
+    // mongodb connection string
+
+    var mongoDB =
+      "mongodb+srv://monu:monu@cluster0.fd8mg.mongodb.net/?retryWrites=true&w=majority";
+
+    const con = await mongoose.connect(mongoDB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log(`MongoDB connected : ${con.connection.host}`);
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
+connectDB();
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -52,13 +71,17 @@ app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
-app.get("/books/loaned",
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+app.get(
+  "/books/loaned",
+  //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  store.getLoanedBooks
+);
 
-app.post("/books/issue", 
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-store.issueBook);
+app.post(
+  "/books/issue",
+  //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  store.issueBook
+);
 
 app.post("/books/search-book", store.searchBooks);
 
