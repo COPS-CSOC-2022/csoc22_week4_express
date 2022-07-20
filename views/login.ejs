@@ -1,0 +1,28 @@
+<html>
+  <%- include ("./partials/header.ejs") %>
+
+  <body>
+  <div class="container-fluid">
+
+    
+    <div class="row">
+      <%- include ("./partials/sidebar.ejs") %>
+    
+      <div class="col-sm-10">
+        <h3>Login</h3>
+
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Username">
+            <br>
+            <input type="password" name="password" placeholder="Password">
+            <br>
+            <button type="submit">Submit & Login</button>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+  </body>
+</html>
+
+
