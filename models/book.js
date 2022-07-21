@@ -10,12 +10,7 @@ var bookSchema = new mongoose.Schema({
   desctiption: String,
   rating: { type: Number, required: true, min: 0, max: 5 },
   mrp: Number,
-  avilable_copies: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "av_copies",
-    },
-  ],
+
+  numbooks: { type: Number, required: true, min: 0, max: 10 },
 });
 module.exports = mongoose.model("Book", bookSchema);

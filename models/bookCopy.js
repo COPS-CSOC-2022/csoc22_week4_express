@@ -14,7 +14,7 @@ var bookCopySchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
-    required: true,
+    required: true
   },
   // borrow_data: //date when book was borrowed
   borrow_date: {

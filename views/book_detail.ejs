@@ -20,13 +20,17 @@
             <dt>MRP:</dt>
             <dd>Rs. <%= book.mrp %></dd>
             <dt>Available Copies:</dt>
-            <dd><%= num_available %></dd>
+            <% num_avi=book.numbooks %>
+            <dd><%= num_avi %></dd
+              <% console.log(book.numbooks) %>  
           </dl>
+          <% if(num_avi) {%>
           <form action="/books/issue" method="POST">
             <input type="text" hidden value="<%= book.id %>" name="bid" />
             <button class="btn btn-primary" id="loan-button" type="submit">
               Loan <%= book.title %>
             </button>
+          <%}%>
           </form>
         </div>
       </div>
