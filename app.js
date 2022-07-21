@@ -55,7 +55,6 @@ TODO: Your task is to complete below controllers in controllers/store.js
 If you need to add any new route add it here and define its controller
 controllers folder.
 */
-
 app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
