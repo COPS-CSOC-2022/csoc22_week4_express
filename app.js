@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
-mongoose.connect("mongodb+srv://hs05june:Hargun@harpreet.c6kkb6q.mongodb.net/Week4",{useNewUrlParser:true,useUnifiedTopology:true});
+mongoose.connect("mongodb+srv://hs05june:Hargun@harpreet.c6kkb6q.mongodb.net/Week4?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console,"Connection error " ));
 db.once('open', function(){console.log('MONGOOSE CONNECTED!!')});
