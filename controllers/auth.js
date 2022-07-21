@@ -7,7 +7,6 @@ var getLogin = (req, res) => {
   }else{
     res.status(200).render('login',{title:"Books | Login"});
   }}catch(err){
-    console.log(err);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -25,7 +24,6 @@ var postLogin = (req, res) => {
       });
     }
   });}catch(err){
-    console.log(err);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -35,7 +33,6 @@ var logout = (req, res) => {
     try{req.logout();
     res.status(200).redirect('/login');}
     catch(err){
-      console.log(err);
       res.status(500).send("Internal Server Error");
     }
   }
@@ -48,7 +45,6 @@ var getRegister = (req, res) => {
   }else{
     res.status(200).render('register',{title:"Books | Register"});
   }}catch(err){
-    console.log(err);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -59,7 +55,6 @@ var postRegister = (req, res) => {
   try{User.register({username: req.body.username}, req.body.password,(err)=>{
     if(!err){
       passport.authenticate("local")(req,res,()=>{
-        // res.send("User registered");
         res.status(200).redirect('/');
       })
     }
@@ -67,7 +62,6 @@ var postRegister = (req, res) => {
       res.status(400).send(err);
     }
   });}catch(err){
-    console.log(err);
     res.status(500).send("Internal Server Error");
   }
 };

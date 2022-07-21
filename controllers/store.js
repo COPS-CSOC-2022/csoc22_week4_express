@@ -8,7 +8,6 @@ var getAllBooks = async (req, res) => {
     try{const allBooks = await Book.find({});
     res.status(200).render("book_list", { books: allBooks, title: "Books | Library" });}
     catch(err){
-        console.log(err);
         res.status(500).send("Internal Server Error");
       }
 }
@@ -19,7 +18,7 @@ var getBook = async (req, res) => {
         const book = await Book.findById(req.params.id);
         if (book) res.status(200).render("book_detail", { book: book, title: "Books | " + book.title});
         else res.status(404).send("No such book");
-    } catch (err) { res.status(500).send("Internal Server Error"); console.log(err); }
+    } catch (err) { res.status(500).send("Internal Server Error"); }
 
 }
 
@@ -30,7 +29,6 @@ var getLoanedBooks = async (req, res) => {
         const loaned_books = await Bookcopy.find({borrower:req.user}).populate('book');
             res.status(200).render('loaned_books',{books:loaned_books,title:"Books | Loaned"});
     } catch (err) {
-        console.log(err);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -53,7 +51,6 @@ var issueBook = async (req, res) => {
         }
     } catch (e) {
         res.status(500).send("Internal Server Error");
-        console.log(e);
     }
 }
 
@@ -67,7 +64,6 @@ var searchBooks = async (req, res) => {
         else { res.status(404).send("No such Book") }
     }
     catch (err) {
-        console.log(err);
         res.status(500).send("Internal Server Error");
     }
 }
@@ -86,7 +82,6 @@ var returnBook = async (req, res) => {
             res.status(200).redirect("/books/loaned")            
         }
     } catch (err) {
-        console.log(err);
         res.status(500).send("Internal Server Error");
     }
 }
