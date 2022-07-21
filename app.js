@@ -84,5 +84,5 @@ app.post("/register", auth.postRegister);
 app.get("/logout", auth.logout);
 
 app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+  console.log(`App listening on port ${port}!`);
 });
