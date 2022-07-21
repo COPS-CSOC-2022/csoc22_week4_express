@@ -37,6 +37,9 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.set('useFindAndModify' , false);
+const uri = "mongodb+srv://yash6318:Ask9234@cluster0.gbiwfdi.mongodb.net/LibraryDb";
+mongoose.connect(uri,{ useNewUrlParser: true , useUnifiedTopology: true})
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -54,15 +57,21 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  middleware.isLoggedIn,
  store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn,
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post("/return", 
+  middleware.isLoggedIn,
+  store.returnBook
+  )
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
