@@ -1,11 +1,13 @@
-var middlewareObj={};
-//middleware object to check if logged in
-middlewareObj.isLoggedIn=function(req,res,next){
-	/*
-    TODO: Write function to check if user is logged in.
-    If user is logged in: Redirect to next page
-    else, redirect to login page
-    */
-	}
+let middlewareObj = {};
 
-    module.exports=middlewareObj;
+middlewareObj.isLoggedIn = (req,res,next) => {
+   if (req.isAuthenticated()) next()
+   else res.redirect('/login')
+}
+
+middlewareObj.isLoggedOut = (req, res, next) => {
+    if (req.isAuthenticated()) res.redirect('/')
+    else next()
+}
+
+module.exports = middlewareObj;

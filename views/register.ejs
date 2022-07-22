@@ -1,0 +1,21 @@
+<html>
+	<%- include("./partials/header.ejs", {title: 'Register'}) %>
+    <body>
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input type="username" class="form-control" id="inputUsername" name="username" placeholder="Username" />
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"  name="email" placeholder="Enter email" />
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword"  name="password" placeholder="Password" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </body>
+</html>
