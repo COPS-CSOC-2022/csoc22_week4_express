@@ -1,6 +1,10 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+  <%- include ("./partials/header.ejs") %> <% layout('layouts/boilerplate')%>
   <body>
+    <% if(books.length == 0 ){ %>
+    <h3>You do not have any loaned books</h3>
+    <h6>Go to <a href="/books">All Books</a> to loan a book</h6>
+    <% }else{ %>
     <h3>Loaned Books list</h3>
 
     <table class="table">
@@ -17,17 +21,37 @@
       <tbody>
         <% books.forEach(function(copy,i){%>
         <tr>
-          <th scope="row"><%= i %></th>
-          <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
+          <th scope="row"><%= i+1 %></th>
+          <td>
+            <a href="/book/<%=copy.book._id%>/"><%= copy.book.title %></a>
+          </td>
           <td><%= copy.book.author %></td>
           <td><%= copy.book.genre %></td>
           <td><%= copy.borrow_date %></td>
           <td>
             <!-- TODO: Create a Return book tag that is used for returning the book -->
+            <form action="/return" method="post">
+              <input
+                type="text"
+                hidden
+                name="returnBookID"
+                value="<%= copy.book._id %>"
+              />
+              <input
+                type="text"
+                hidden
+                name="returnBookloanID"
+                value="<%= copy._id %>"
+              />
+              <button class="btn btn-danger" id="return-button" type="submit">
+                Return Book
+              </button>
+            </form>
           </td>
         </tr>
         <%})%>
       </tbody>
     </table>
+    <% } %>
   </body>
 </html>

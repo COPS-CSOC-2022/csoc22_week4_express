@@ -1,8 +1,27 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+  <%- include ("./partials/header.ejs") %> <%- include
+  ("./partials/navebar.ejs") %>
 
-  <body>
-    <%- include ("./partials/navebar.ejs") %>
-    <h3>Welcome to the library. This is your homepage.</h3>
+  <body
+    style="
+      background-image: url('/images/library.jpg');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    "
+  >
+    <div style="text-align: center; height: 25%; padding-top: 25%">
+      <button
+        onclick="window.location.href='/books'"
+        style="
+          margin: auto;
+          width: 150px;
+          height: 75px;
+          border-radius: 50%;
+          background-color: yellow;
+        "
+      >
+        <b>Welcome</b>
+      </button>
+    </div>
   </body>
 </html>

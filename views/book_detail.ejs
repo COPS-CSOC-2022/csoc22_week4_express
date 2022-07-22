@@ -1,31 +1,29 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+  <%- include ("./partials/header.ejs") %> <% layout('layouts/boilerplate')%>
 
   <body>
     <div class="container-fluid">
       <div class="row">
-        <%- include ("./partials/navebar.ejs") %>
-        <div class="col-sm-10">
-          <h2>Title: <%= book.title %></h2>
-
+        <div class="col-sm-12">
+          <h2><u><%= book.title %></u></h2>
           <dl>
-            <dt>Genre:</dt>
+            <dt><u>Genre:</u></dt>
             <dd><%= book.genre %></dd>
-            <dt>Author:</dt>
+            <dt><u>Author:</u></dt>
             <dd><%= book.author %></dd>
-            <dt>Description:</dt>
+            <dt><u>Description:</u></dt>
             <dd><%= book.description %></dd>
-            <dt>Rating:</dt>
+            <dt><u>Rating:</u></dt>
             <dd><%= book.rating %></dd>
-            <dt>MRP:</dt>
-            <dd>Rs. <%= book.mrp %></dd>
-            <dt>Available Copies:</dt>
+            <dt><u>MRP:</u></dt>
+            <dd><%= book.mrp %>$</dd>
+            <dt><u>Available Copies:</u></dt>
             <dd><%= book.available_copies %></dd>
           </dl>
           <form action="/books/issue" method="POST">
             <input type="text" hidden value="<%= book.id %>" name="bid" />
             <button class="btn btn-primary" id="loan-button" type="submit">
-              Loan <%= book.title %>
+              Loan " <u><%= book.title %> </u>"
             </button>
           </form>
         </div>
