@@ -6,9 +6,11 @@ var auth = require("./controllers/auth");
 var store = require("./controllers/store");
 var User = require("./models/user");
 var localStrategy = require("passport-local");
+var dotenv=require('dotenv')
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
-var port = process.env.PORT || 3000;
+
+dotenv.config( { path : 'config.env'} )
 
 app.use(express.static("public"));
 
@@ -33,10 +35,20 @@ app.set("view engine", "ejs");
 //THIS MIDDLEWARE ALLOWS US TO ACCESS THE LOGGED IN USER AS currentUser in all views
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
+  // console.log(currentUser);
   next();
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.connect(process.env.URL,{
+
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+  })
+  .then(()=>{console.log("connected");
+  })
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -52,15 +64,17 @@ app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
-app.get("/books/loaned",
+app.get("/books/loaned",middleware.isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
  store.getLoanedBooks);
 
-app.post("/books/issue", 
+app.post("/books/issue",middleware.isLoggedIn, 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
+
+app.post("/books/return", middleware.isLoggedIn,store.returnBook);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
 
@@ -80,6 +94,6 @@ app.post("/register", auth.postRegister);
 
 app.get("/logout", auth.logout);
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}!`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App listening on port ${process.env.PORT || 3000}!`);
 });
