@@ -1,0 +1,22 @@
+<html lang="en">
+  <%- include ("./partials/header.ejs") %>
+
+  <body class="py-4">
+    <div class="row"><%- include ("./partials/sidebar.ejs") %></div>
+    <h3 class="px-4">Login</h3>
+    <form action="/login" method="POST" class="px-4">
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" placeholder="username" />
+      <br />
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="password"
+      />
+      <br />
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </body>
+</html>
