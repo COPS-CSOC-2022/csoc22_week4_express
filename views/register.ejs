@@ -1,0 +1,31 @@
+<html>
+  <%- include ("./partials/header.ejs") %>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <%- include ("./partials/sidebar.ejs") %>
+        <div class="col-sm-10">
+          <h2>Register</h2>
+          <form action="/register" method="POST">
+            <div>
+              <br>
+                <label for="username">Enter a Username</label><br>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div>
+              <br>
+                <label for="password">Enter a Password</label><br>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary"">Register</button>
+          </form>
+          <br>
+          <b>Already have an account? </b>
+          <a href="/login">Log In</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

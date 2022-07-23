@@ -8,6 +8,8 @@ var User = require("./models/user");
 var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
+const Book = require("./models/book");
+const bookCopy = require("./models/bookCopy");
 var port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
@@ -37,6 +39,35 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+const dbURI = 'mongodb+srv://bhav:gajyYkFmjmFhf7Km@library.pmgq6.mongodb.net/booksdb?retryWrites=true&w=majority';
+
+mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then((result) => {
+      console.log('Connected to BooksDB');
+      // const bookcopy = new bookCopy({
+      //   book: mongoose.Types.ObjectId('62db7a5b9c5dd614e6209e56'),
+      //   status: true,
+      //   borrow_date: null,
+      //   borrower: null
+      // }); 
+      // bookcopy.save();
+      // const book = new Book({
+      //   title: 'Zero to One',
+      //   genre: 'Self improvement',
+      //   author: 'Peter Thiel',
+      //   description: 'Zero to One presents at once an optimistic view of the future of progress in America and a new way of thinking about innovation: it starts by learning to ask the questions that lead you to find value in unexpected places.',
+      //   rating: 4.2,
+      //   mrp: 399,
+      //   available_copies: 3
+      // });
+      // book.save();
+      app.listen(port);
+    })
+    .catch((err) => console.log(err));
+
+
+////////////////////////////////////////////
+
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -54,15 +85,19 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+ middleware.isLoggedIn,
  store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn,
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+
+app.post('/books/return', store.returnBook);
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
@@ -80,6 +115,3 @@ app.post("/register", auth.postRegister);
 
 app.get("/logout", auth.logout);
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}!`);
-});
