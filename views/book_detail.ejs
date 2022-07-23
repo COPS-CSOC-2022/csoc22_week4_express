@@ -22,12 +22,18 @@
             <dt>Available Copies:</dt>
             <dd><%= num_available %></dd>
           </dl>
-          <form action="/books/issue" method="POST">
-            <input type="text" hidden value="<%= book.id %>" name="bid" />
-            <button class="btn btn-primary" id="loan-button" type="submit">
-              Loan <%= book.title %>
-            </button>
-          </form>
+          <% if (currentUser){ %>
+            <form action="/books/issue" method="POST">
+              <input type="text" hidden value="<%= book.id %>" name="bid" />
+              <% if(num_available != 0) { %>
+                <button class="btn btn-primary" id="loan-button" type="submit">
+                  Loan <%= book.title %>
+                </button>
+              <% } %>
+            </form>
+          <% } else { %>
+            <h5><b> Login to Loan book </b></h5>
+          <% } %>
         </div>
       </div>
     </div>
