@@ -2,34 +2,40 @@
   <%- include ("./partials/header.ejs") %>
 
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <%- include ("./partials/sidebar.ejs") %>
-        <div class="col-sm-10">
-          <h2>Title: <%= book.title %></h2>
-
-          <dl>
-            <dt>Genre:</dt>
-            <dd><%= book.genre %></dd>
-            <dt>Author:</dt>
-            <dd><%= book.author %></dd>
-            <dt>Description:</dt>
-            <dd><%= book.description %></dd>
-            <dt>Rating:</dt>
-            <dd><%= book.rating %></dd>
-            <dt>MRP:</dt>
-            <dd>Rs. <%= book.mrp %></dd>
-            <dt>Available Copies:</dt>
-            <dd><%= num_available %></dd>
-          </dl>
-          <form action="/books/issue" method="POST">
-            <input type="text" hidden value="<%= book.id %>" name="bid" />
-            <button class="btn btn-primary" id="loan-button" type="submit">
-              Loan <%= book.title %>
-            </button>
-          </form>
+    <%- include ("./partials/sidebar.ejs") %>
+    <div class="container-fluid mt-5">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-8 ">
+          <div class="card text-white bg-dark mb-3 text-center">
+            <h2 class="card-header">Title: <%= book.title %></h2>
+            <div class="card-body">
+              <h3 class="card-title">Genre</h3>
+              <p class="card-text" style="font-size:1.2rem;"><%= book.genre %></p>
+              <h3 class="card-title">Author</h3>
+              <p class="card-text" style="font-size:1.2rem;"><%= book.author %></p>
+              <h3 class="card-title">Description</h3>
+              <p class="card-text" style="font-size:1.2rem;"><%= book.description %></p>
+              <h3 class="card-title">Rating</h3>
+              <p class="card-text" style="font-size:1.2rem;"><%= book.rating %></p>
+              <h3 class="card-title">MRP</h3>
+              <p class="card-text" style="font-size:1.2rem;">Rs. <%= book.mrp %></p>
+              <h3 class="card-title">Available Copies</h3>
+              <p class="card-text" style="font-size:1.2rem;"><%= book.available_copies %></p>
+              <form action="/books/issue" method="POST">
+                <input type="text" hidden value="<%= book.id %>" name="bid" />
+                <button class="btn btn-light" id="loan-button" type="submit" style="font-size:1.3rem;">
+                  Loan <%= book.title %>
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
+        
+        
       </div>
     </div>
+
+    <%- include("./partials/footer") %>
+
   </body>
 </html>
