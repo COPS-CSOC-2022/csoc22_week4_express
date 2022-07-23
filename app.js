@@ -11,7 +11,7 @@ var middleware = require("./middleware"); //no need of writing index.js as direc
 var port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
-
+app.use(express.json());
 /*  CONFIGURE WITH PASSPORT */
 app.use(
   require("express-session")({
@@ -37,6 +37,10 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.connect("mongodb+srv://hs05june:Hargun@harpreet.c6kkb6q.mongodb.net/Week4?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console,"Connection error " ));
+db.once('open', function(){console.log('MONGOOSE CONNECTED!!')});
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -47,23 +51,22 @@ TODO: Your task is to complete below controllers in controllers/store.js
 If you need to add any new route add it here and define its controller
 controllers folder.
 */
-
 app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
-app.get("/books/loaned",
+app.get("/books/loaned",middleware.isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
  store.getLoanedBooks);
 
-app.post("/books/issue", 
+app.post("/books/issue", middleware.isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
-
+app.post("/books/return/:id",middleware.isLoggedIn,store.returnBook);
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
 If you need to add any new route add it here and define its controller

@@ -1,6 +1,10 @@
 <html>
   <%- include ("./partials/header.ejs") %>
   <body>
+    <div class="container-fluid">
+      <div class="row">
+        <%- include ("./partials/sidebar.ejs") %>
+        <div class="col-sm-10">
     <h3>Loaned Books list</h3>
 
     <table class="table">
@@ -17,17 +21,27 @@
       <tbody>
         <% books.forEach(function(copy,i){%>
         <tr>
-          <th scope="row"><%= i %></th>
+          <th scope="row"><%= i+1 %></th>
           <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
           <td><%= copy.book.author %></td>
           <td><%= copy.book.genre %></td>
-          <td><%= copy.borrow_date %></td>
+          <td><%= copy.borrow_data%></td>
           <td>
             <!-- TODO: Create a Return book tag that is used for returning the book -->
+            <form method="post" action="/books/return/<%=copy.id%>">
+            <div class="col-sm-6 py-1">
+              <button id="search_button" class="btn btn-primary" type="submit">
+                Return
+              </button>
+            </div>
+          </form>
           </td>
         </tr>
         <%})%>
       </tbody>
     </table>
+    </div>
+    </div>
+    </div>
   </body>
 </html>
