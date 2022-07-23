@@ -24,6 +24,9 @@
           <td><%= copy.borrow_date %></td>
           <td>
             <!-- TODO: Create a Return book tag that is used for returning the book -->
+            <form action="/books/return/<%=copy.id%>" method="post">
+              <button type="submit">return</button>
+            </form>
           </td>
         </tr>
         <%})%>
