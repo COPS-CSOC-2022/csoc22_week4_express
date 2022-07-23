@@ -1,16 +1,16 @@
 <div class="col-sm-2">
   <ul class="sidebar-nav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/books">All books</a></li>
+    <li class="pt-4" class="pb-2"><a href="/">Home</a></li>
+    <li class="py-2"><a href="/books">All books</a></li>
   </ul>
 
   <ul class="sidebar-nav">
     <% if (currentUser){ %>
-    <li>User: <%= currentUser.username %></li>
-    <li><a href="/books/loaned">My Borrowed</a></li>
-    <li><a href="/logout">Logout</a></li>
+    <li class="py-2">User: <%= currentUser.username %></li>
+    <li class="py-2"><a href="/books/loaned">My Borrowed</a></li>
+    <li class="py-2"><a href="/logout">Logout</a></li>
     <% } else { %>
-    <li><a href="/login">Login</a></li>
+    <li class="py-2"><a href="/login">Login</a></li>
     <% } %>
   </ul>
 </div>
