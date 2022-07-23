@@ -6,11 +6,13 @@ var auth = require("./controllers/auth");
 var store = require("./controllers/store");
 var User = require("./models/user");
 var localStrategy = require("passport-local");
+
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
 var port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
+app.use(express.static("favicon.ico"));
 
 /*  CONFIGURE WITH PASSPORT */
 app.use(
@@ -20,11 +22,16 @@ app.use(
     saveUninitialized: false,
   })
 );
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
 
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
 app.use(passport.initialize()); //middleware that initialises Passport.
 app.use(passport.session());
-passport.use(new localStrategy(User.authenticate())); //used to authenticate User model with passport
-passport.serializeUser(User.serializeUser()); //used to serialize the user for the session
+passport.use(new localStrategy(User.authenticate())); //used to authenticate User model with passportpassport.serializeUser(User.serializeUser()); //used to serialize the user for the session
 passport.deserializeUser(User.deserializeUser()); // used to deserialize the user
 
 app.use(express.urlencoded({ extended: true })); //parses incoming url encoded data from forms to json objects
@@ -37,6 +44,13 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+const db = require("./config/keys").MONGOURL;
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log("Database connected successfully"))
+  .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -52,13 +66,19 @@ app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
-app.get("/books/loaned",
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+app.get(
+  "/books/loaned",
+  //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  middleware.isLoggedIn,
+  store.getLoanedBooks
+);
 
-app.post("/books/issue", 
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-store.issueBook);
+app.post(
+  "/books/issue",
+  //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  middleware.isLoggedIn,
+  store.issueBook
+);
 
 app.post("/books/search-book", store.searchBooks);
 
@@ -69,6 +89,7 @@ TODO: Your task is to complete below controllers in controllers/auth.js
 If you need to add any new route add it here and define its controller
 controllers folder.
 */
+app.post("/books/return", middleware.isLoggedIn, store.returnBook);
 
 app.get("/login", auth.getLogin);
 
