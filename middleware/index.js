@@ -6,9 +6,9 @@ const isLoggedIn=function(req,res,next){
     If user is logged in: Redirect to next page
     else, redirect to login page
     */
-   if(req.user) return next();
-    console.log(req);
-   res.redirect('/login')
+   if(req.user) next();
+   else
+   res.status(200).redirect('/login')
 }
 
 module.exports={isLoggedIn};

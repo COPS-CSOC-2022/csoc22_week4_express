@@ -1,16 +1,16 @@
-<div class="col-sm-2">
-  <ul class="sidebar-nav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/books">All books</a></li>
+<div class="col-sm-2 h-auto bg-dark">
+  <ul class="sidebar-nav nav flex-column">
+    <li class="nav-item"><a class="nav-link text-light" href="/">Home</a></li>
+    <li class="nav-item"><a class="nav-link text-light" href="/books">All books</a></li>
   </ul>
 
-  <ul class="sidebar-nav">
+  <ul class="sidebar-nav nav flex-column">
     <% if (currentUser){ %>
-    <li>User: <%= currentUser.username %></li>
-    <li><a href="/books/loaned">My Borrowed</a></li>
-    <li><a href="/logout">Logout</a></li>
+    <li class="nav-item text-light">User: <%= currentUser.username %></li>
+    <li class="nav-item"><a class="nav-link text-light" href="/books/loaned">My Borrowed</a></li>
+    <li class="nav-item"><a class="nav-link text-light" href="/logout">Logout</a></li>
     <% } else { %>
-    <li><a href="/login">Login</a></li>
+    <li class="nav-item"><a class="nav-link text-light" href="/login">Login</a></li>
     <% } %>
   </ul>
 </div>

@@ -71,12 +71,12 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-middleware.isLoggedIn(),
+middleware.isLoggedIn,
 store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-middleware.isLoggedIn(),
+middleware.isLoggedIn,
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);

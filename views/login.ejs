@@ -1,15 +1,15 @@
 <html>
     <%- include ("./partials/header.ejs") %>
     <body>
-       <div class="loginForm">
+       <div class="loginForm container mt-4 border">
         <h1>Login</h1>
-        <h6>Don't Have an account <span style="color: blue;">?</span> <a href="/register">Register</a></h6>
+        <h6 class="my-4" style="font-size:1.3rem;">Don't Have an account <span style="color: blue;">?</span> <a href="/register">Register</a></h6>
         <form method="POST">
-            <label for="username">Username</label>
-            <input name="username" id="username" type="text" placeholder="Enter the Username">
-            <label for="">Password</label>
-            <input name="password" id="password" type="password" placeholder="Enter the Password" >
-            <button type="submit">Submit</button>
+            <label class="form-label" for="username">Username</label>
+            <input name="username" class="form-control" id="username" type="text" placeholder="Enter the Username">
+            <label for="" class="form-label">Password</label>
+            <input name="password" class="form-control" id="password" type="password" placeholder="Enter the Password" >
+            <button type="submit" class="btn-primary btn mt-4">Submit</button>
         </form>
        </div> 
 
