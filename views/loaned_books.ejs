@@ -21,9 +21,13 @@
           <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
           <td><%= copy.book.author %></td>
           <td><%= copy.book.genre %></td>
-          <td><%= copy.borrow_date %></td>
+          <td><%= copy.borrow_data %></td>
           <td>
             <!-- TODO: Create a Return book tag that is used for returning the book -->
+            <form action="/books/return" method="POST">
+              <input hidden value="<%=copy._id%>" type="text" name="bid">
+              <button class="btn btn-primary btn-sm" type="submit">Return</button>
+            </form>
           </td>
         </tr>
         <%})%>
