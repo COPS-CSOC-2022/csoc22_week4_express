@@ -4,14 +4,15 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var auth = require("./controllers/auth");
 var store = require("./controllers/store");
-var User = require("./models/user");
+var User = require("./models/User");
 var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
+const bookCopy = require("./models/bookCopy");
 var port = process.env.PORT || 3000;
-
+require('dotenv').config();
 app.use(express.static("public"));
-
+app.use(express.json())
 /*  CONFIGURE WITH PASSPORT */
 app.use(
   require("express-session")({
@@ -37,7 +38,23 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
-
+mongoose.connect(process.env.MONGODB_CREDENTIALS,
+  {
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+  }).then(()=>{
+    console.log("connected successfully to mongo");
+    // const copy = new bookCopy({
+    //   book:mongoose.Types.ObjectId('62d7e1db6d2974b7fd688a44'),
+    //   status:true,
+    //   borrow_data:null,
+    //   borrower:null
+    // })
+    // copy.save()
+  })
+  .catch((e)=>{
+    console.log(`An error occured while connecting to MONGO :${e}`);
+  })
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
 });
@@ -54,13 +71,17 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+middleware.isLoggedIn(),
+store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn(),
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
+
+app.post("/books/return" , store.returnBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
 
@@ -72,7 +93,7 @@ controllers folder.
 
 app.get("/login", auth.getLogin);
 
-app.post("/login", auth.postLogin);
+app.post("/login",auth.postLogin);
 
 app.get("/register", auth.getRegister);
 

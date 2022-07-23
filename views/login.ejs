@@ -1,0 +1,17 @@
+<html>
+    <%- include ("./partials/header.ejs") %>
+    <body>
+       <div class="loginForm">
+        <h1>Login</h1>
+        <h6>Don't Have an account <span style="color: blue;">?</span> <a href="/register">Register</a></h6>
+        <form method="POST">
+            <label for="username">Username</label>
+            <input name="username" id="username" type="text" placeholder="Enter the Username">
+            <label for="">Password</label>
+            <input name="password" id="password" type="password" placeholder="Enter the Password" >
+            <button type="submit">Submit</button>
+        </form>
+       </div> 
+
+    </body>
+</html>
