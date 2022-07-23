@@ -38,8 +38,10 @@ app.use(function (req, res, next) {
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
 
+mongoose.connect('mongodb://localhost:27017/Book')
+ 
 app.get("/", (req, res) => {
-  res.render("index", { title: "Library" });
+  res.render("index", { title: "Library"});
 });
 
 /*-----------------Store ROUTES
@@ -56,11 +58,12 @@ app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
  store.getLoanedBooks);
 
-app.post("/books/issue", 
+app.post("/books/issue/:id", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
+app.post("/books/return/:id", store.returnBook);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
 

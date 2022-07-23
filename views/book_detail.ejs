@@ -20,9 +20,9 @@
             <dt>MRP:</dt>
             <dd>Rs. <%= book.mrp %></dd>
             <dt>Available Copies:</dt>
-            <dd><%= num_available %></dd>
+            <dd><%= book.available_copies %></dd>
           </dl>
-          <form action="/books/issue" method="POST">
+          <form action="/books/issue/<%= book.id %>" method="POST">
             <input type="text" hidden value="<%= book.id %>" name="bid" />
             <button class="btn btn-primary" id="loan-button" type="submit">
               Loan <%= book.title %>
