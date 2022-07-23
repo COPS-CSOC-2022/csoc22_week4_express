@@ -94,7 +94,7 @@ var issueBook = (req, res) => {
                     Bookcopy.updateOne({book: book},{status: bookAvailable}, (err)=> {console.log(err)});
                     res.redirect('/books/loaned');
                 }else {
-                    res.render('errorPage',{message : "The Book You Require is Not in the Stock"});
+                    res.render('errorPage',{message : "The Book You Require is Not in the Stock",title: "Library"});
                     }
             }
         }
@@ -130,7 +130,7 @@ var returnBooks = (req, res) => {
                     Bookcopy.updateOne({book: book},{status: true}, (err)=> {console.log(err)});
                     res.redirect('/books/loaned');
                 }else {
-                    res.render('errorPage',{message : "No Such book exist to return"});
+                    res.render('errorPage',{message : "No Such book exist to return",title: "Library"});
                     }
             }
     });
@@ -150,14 +150,14 @@ var searchBooks = (req, res) => {
     Book.findOne({title : bookTitle,author : bookAuthor,genre : bookGenre},(err,book)=>{
         if(!err){
             if(book!==null){
-                res.render("book_detail", { book: book,title: "Books | Library" });
+                res.render("book_detail", { book: book,title: "Library" });
             }
             else{ 
-                res.render('errorPage',{message : "No Such book with the required specifics exist in this Library"});
+                res.render('errorPage',{message : "No Such book with the required specifics exist in this Library",title: "Library"});
             }
         }
         else{
-            res.render('errorPage',{message : "No Such book exist in this Library"});
+            res.render('errorPage',{message : "No Such book exist in this Library",title: "Library"});
         }
     })
 }
