@@ -1,84 +1,75 @@
-const express = require("express");
-const app = express();
-var mongoose = require("mongoose");
-var passport = require("passport");
-var auth = require("./controllers/auth");
-var store = require("./controllers/store");
-var User = require("./models/user");
-var localStrategy = require("passport-local");
-//importing the middleware object to use its functions
-var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
-var port = process.env.PORT || 3000;
+const express         = require("express");
+const flash           = require("express-flash");
+const app             = express();
+const mongoose        = require("mongoose");
+const passport        = require("passport");
+const auth            = require("./controllers/auth");
+const store           = require("./controllers/store");
+const User            = require("./models/user");
+const localStrategy   = require("passport-local").Strategy;
+const middleware      = require("./middleware");
+require('dotenv').config();
+const port            = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 
-/*  CONFIGURE WITH PASSPORT */
 app.use(
   require("express-session")({
-    secret: "decryptionkey", //This is the secret used to sign the session ID cookie.
+    secret: "decryptionkey",
     resave: false,
     saveUninitialized: false,
   })
 );
 
-app.use(passport.initialize()); //middleware that initialises Passport.
+app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new localStrategy(User.authenticate())); //used to authenticate User model with passport
-passport.serializeUser(User.serializeUser()); //used to serialize the user for the session
-passport.deserializeUser(User.deserializeUser()); // used to deserialize the user
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-app.use(express.urlencoded({ extended: true })); //parses incoming url encoded data from forms to json objects
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
-//THIS MIDDLEWARE ALLOWS US TO ACCESS THE LOGGED IN USER AS currentUser in all views
+app.use(flash());
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.path = req.path;
   next();
 });
 
-/* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+const mongooseConfig = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+}
+mongoose.connect(process.env.MONGO_URI, mongooseConfig, () => {
+  console.log("Connected to MongoDB");
+})
 
-app.get("/", (req, res) => {
-  res.render("index", { title: "Library" });
+app.get("/", middleware.isLoggedIn, (req, res) => {
+  res.render("index");
 });
 
-/*-----------------Store ROUTES
-TODO: Your task is to complete below controllers in controllers/store.js
-If you need to add any new route add it here and define its controller
-controllers folder.
-*/
+app.get("/books", middleware.isLoggedIn, store.getAllBooks);
 
-app.get("/books", store.getAllBooks);
+app.get("/book/:id", middleware.isLoggedIn, store.getBook);
 
-app.get("/book/:id", store.getBook);
+app.get("/books/loaned", middleware.isLoggedIn, store.getLoanedBooks);
 
-app.get("/books/loaned",
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+app.post("/books/issue", middleware.isLoggedIn, store.issueBook);
 
-app.post("/books/issue", 
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-store.issueBook);
+app.post("/books/return", middleware.isLoggedIn, store.returnBook);
 
-app.post("/books/search-book", store.searchBooks);
+app.post("/books/search-book", middleware.isLoggedIn, store.searchBooks);
 
-/* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.get("/login", middleware.isLoggedOut, auth.getLogin);
 
-/*-----------------AUTH ROUTES
-TODO: Your task is to complete below controllers in controllers/auth.js
-If you need to add any new route add it here and define its controller
-controllers folder.
-*/
+app.post("/login", middleware.isLoggedOut, auth.postLogin);
 
-app.get("/login", auth.getLogin);
+app.get("/register", middleware.isLoggedOut, auth.getRegister);
 
-app.post("/login", auth.postLogin);
+app.post("/register", middleware.isLoggedOut, auth.postRegister);
 
-app.get("/register", auth.getRegister);
-
-app.post("/register", auth.postRegister);
-
-app.get("/logout", auth.logout);
+app.get("/logout", middleware.isLoggedIn, auth.logout);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);

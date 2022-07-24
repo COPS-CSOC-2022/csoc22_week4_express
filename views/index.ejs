@@ -1,8 +1,8 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
-
+  <%- include ("./partials/header.ejs", {title: "library"}) %>
   <body>
     <%- include ("./partials/sidebar.ejs") %>
-    <h3>Welcome to the library. This is your homepage.</h3>
+    <!-- <div class="h-80 d-flex align-items-center justify-content-center"><h3>Welcome to the library. This is your homepage.</h3></div> -->
+    <div style="display:grid; align-items:center; justify-content:center; height:70%;"><h3>Welcome to the library. This is your homepage.</h3></div>
   </body>
 </html>

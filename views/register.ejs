@@ -1,0 +1,52 @@
+<html>
+	<%- include("./partials/header.ejs", {title: 'Register'}) %>
+	<body>
+		<%- include ("./partials/sidebar.ejs") %>
+		<form action="/register" method="POST" class="pt-4 px-4" id="form">
+			<div class="form-group">
+				<label for="inputUsername">Username</label>
+				<input type="username" class="form-control" id="inputUsername" name="username" placeholder="Username" />
+			</div>
+			<div class="form-group">
+				<label for="inputEmail">Email address</label>
+				<input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" name="email" placeholder="Enter email" />
+				<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+			</div>
+			<div class="form-group">
+				<label for="inputPassword">Password</label>
+				<input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" />
+			</div>
+			<div class="form-group">
+				<label for="confirmPassword">Confirm Password</label>
+				<input type="password" class="form-control" id="confirmPassword" placeholder="Re-Type Password" />
+			</div>
+			<button class="btn btn-primary" id="btn">Submit</button>
+		</form>
+		<%- include('./partials/toast.ejs') %>
+	</body>
+</html>
+
+<script>
+	const username = document.querySelector('#inputUsername')
+	const email = document.querySelector('#inputEmail')
+	const pass = document.querySelector('#inputPassword')
+	const conf = document.querySelector('#confirmPassword')
+	const button = document.querySelector('#btn')
+	const form = document.querySelector('#form')
+	button.addEventListener('click', (e, a) => {
+		e.preventDefault()
+		if (username.value === '') {
+			alert('Username cannot be empty')
+		} else if (email.value === '') {
+      alert('Email cannot be empty')
+		} else if (pass.value === '') {
+      alert('Password cannot be empty')
+    } else if (conf.value === '') {
+      alert('Confirm password field cannot be empty')
+    } else if (pass.value !== conf.value) {
+      alert('Password fields don\'t match')
+    } else {
+		  form.submit()
+    }
+	})
+</script>
