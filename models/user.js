@@ -8,10 +8,10 @@ var userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
   loaned_books: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,4 +21,4 @@ var userSchema = new mongoose.Schema({
   ],
 });
 userSchema.plugin(passportLocal);
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("user", userSchema);

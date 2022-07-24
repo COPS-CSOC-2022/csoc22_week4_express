@@ -31,10 +31,9 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
     <!-- title -->
     <link rel="icon" href="/images/favicon.png" sizes="256x256" />
-    <title>P2P</title>
 
     <style type="text/css">
       * {
@@ -145,47 +144,42 @@
           >
             Register
           </h1>
-          <div class="row">
-            <div class="col-1"></div>
-            <div class="col-7 mt-3">
-              <label id="lab1">Username</label>
+          <form action="/register" method="POST">
+            <div class="form-group">
+              <label for="username">Username</label>
               <input
                 type="text"
+                name="username"
                 placeholder="Enter your Username"
                 class="form-control"
                 id="username"
                 required
-              /><br />
-              <label id="lab2">Password</label>
+              />
+            </div>
+            <br />
+            <div class="form-group">
+              <label for="password">Password</label>
               <input
                 type="password"
+                name="password"
                 placeholder="Enter Password"
                 class="form-control"
                 id="password"
                 required
-              /><br />
-              <label id="lab3">Confirm Password</label>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                class="form-control"
-                id="confirmPassword"
-                required
-              /><br />
-              <button
-                class="btn btn-large px-4 py-1"
-                type="submit"
-                id="submitBtn"
-                onclick="register()"
-              >
-                Register
-              </button>
-              <a href="/auth/google" class="btn btn-primary"
-                ><i class="fab fa-google left"></i> Log in with Google</a
-              >
+              />
             </div>
-            <div class="col-4"></div>
-          </div>
+            <br />
+            <button
+              class="btn btn-large px-4 py-1"
+              type="submit"
+              id="submitBtn"
+            >
+              Register
+            </button>
+            <!-- <a href="/auth/google" class="btn btn-primary"
+                ><i class="fab fa-google left"></i> Log in with Google</a
+              > -->
+          </form>
           <h1
             style="font-family: var(--title); font-size: 18px; color: #011d30"
             class="pl-md-5 ml-md-2 pt-4"

@@ -1,11 +1,70 @@
+const mongoose = require("mongoose");
+const Book = require("../models/book");
+const User = require("../models/user");
+const Bookcopy = require("../models/bookCopy");
+var passport = require("passport");
+var localStrategy = require("passport-local").Strategy;
+const connectDB = async () => {
+  try {
+    // mongodb connection string
+    var mongoDB =
+      "mongodb://monu:monu@cluster0-shard-00-00.fd8mg.mongodb.net:27017,cluster0-shard-00-01.fd8mg.mongodb.net:27017,cluster0-shard-00-02.fd8mg.mongodb.net:27017/?ssl=true&replicaSet=atlas-mu9ebx-shard-0&authSource=admin&retryWrites=true&w=majority";
+    const con = await mongoose.connect(mongoDB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB connected : ${con.connection.host}`);
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
+connectDB();
 var getLogin = (req, res) => {
   //TODO: render login page
   res.render("login", { title: "Login" });
 };
 
-var postLogin = (req, res) => {
-  // TODO: authenticate using passport
-  //On successful authentication, redirect to next page
+var postLogin = (req, res, next) => {
+  console.log(req.body.username);
+  if (!req.body.username || !req.body.password)
+   {
+    console.log("empty");
+    return res.render('login', {
+      title: 'Login',
+      errorMessage: 'Username or password was not given.'
+    });
+  }
+  passport.authenticate('local', function (err, user, info) {
+    if (err) 
+    {
+      console.log(err);
+      return res.render('login', {
+        title: 'Login',
+        errorMessage: 'Err.'
+      });
+    }
+    else
+    {
+    if (!user)
+      return res.render('login', {
+        title: 'Login',
+        errorMessage: 'username or password incorrect'
+      });
+    req.logIn(user, function (err) {
+      if (err)
+      { console.log(err);
+        console.log("err");
+        return res.render('login', {
+          title: 'Login',
+          errorMessage: 'Err.'
+        });
+      }
+      else
+        return res.redirect('/books');
+    });
+  }
+  })(req, res, next);
 };
 
 var logout = (req, res) => {
@@ -22,6 +81,21 @@ var getRegister = (req, res) => {
 var postRegister = (req, res) => {
   // TODO: Register user to User db using passport
   //On successful authentication, redirect to next page
+  console.log(req.body.username);
+  Users = new User({ username: req.body.username });
+  User.register(Users, req.body.password, function (err, user) {
+    if (err) {
+      res.redirect("/login");
+      console.log(err);
+      console.log("errppp");
+    } else {
+      passport.authenticate("local")(req, res, () => {
+        console.log("Authenticated user.");
+        // req.flash('successMessage', 'You have been registered as well as logged in successfully.');
+        res.redirect("/");
+      });
+    }
+  });
 };
 
 module.exports = {
@@ -29,5 +103,5 @@ module.exports = {
   postLogin,
   logout,
   getRegister,
-  postRegister
+  postRegister,
 };

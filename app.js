@@ -40,10 +40,8 @@ app.use(function (req, res, next) {
 const connectDB = async () => {
   try {
     // mongodb connection string
-
     var mongoDB =
       "mongodb://monu:monu@cluster0-shard-00-00.fd8mg.mongodb.net:27017,cluster0-shard-00-01.fd8mg.mongodb.net:27017,cluster0-shard-00-02.fd8mg.mongodb.net:27017/?ssl=true&replicaSet=atlas-mu9ebx-shard-0&authSource=admin&retryWrites=true&w=majority";
-
     const con = await mongoose.connect(mongoDB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,

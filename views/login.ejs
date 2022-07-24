@@ -31,8 +31,6 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="css/style.css" />
-
     <!-- title -->
     <link rel="icon" href="/images/favicon.png" sizes="256x256" />
     <title>P2p</title>
@@ -147,33 +145,42 @@
             Login
           </h1>
           <div class="row">
-            <div class="col-1"></div>
-            <div class="col-7 mt-3">
-              <label id="lab1">Username</label>
-              <input
-                type="text"
-                placeholder="Enter your Username"
-                class="form-control"
-                id="username"
-              /><br />
-              <label id="lab2">Password</label>
-              <input
-                type="password"
-                required
-                min="1"
-                placeholder="Enter Password"
-                class="form-control"
-                id="password"
-              /><br />
-              <button class="btn btn-large px-4 py-1" type="submit" id="submit">
+            <form action="/login" method="POST">
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Enter your Username"
+                  class="form-control"
+                  id="username"
+                  required
+                />
+              </div>
+              <br />
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter Password"
+                  class="form-control"
+                  id="password"
+                  required
+                />
+              </div>
+              <br />
+              <button
+                class="btn btn-large px-4 py-1"
+                type="submit"
+                id="submitBtn"
+              >
                 Login
               </button>
-
-              <br />
-              <br />
-              <a href="/auth/google" class="btn btn-primary"
+            </form>
+              <!-- <a href="/auth/google" class="btn btn-primary"
                 ><i class="fab fa-google left"></i> Log in with Google</a
-              >
+              > -->
             </div>
             <div class="col-4"></div>
           </div>
