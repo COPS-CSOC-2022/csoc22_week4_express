@@ -3,7 +3,7 @@ const Bookcopy = require("../models/bookCopy");
 const User = require("../models/user");
 const moment = require("moment");
 
-let getAllBooks = (req, res) => {
+const getAllBooks = (req, res) => {
     //TODO: access all books from the book model and render book list page
     Book.find()
         .exec((err, result)=>{
@@ -16,7 +16,7 @@ let getAllBooks = (req, res) => {
         })
 }
 
-var getBook = (req, res) => {
+const getBook = (req, res) => {
     //TODO: access the book with a given id and render book detail page
     Book.findById(req.params.id)
     .populate('available_copies')
@@ -33,7 +33,7 @@ var getBook = (req, res) => {
     })
 }
 
-var getLoanedBooks = (req, res) => {
+const getLoanedBooks = (req, res) => {
     Bookcopy.find({borrower: req.user.id})
     .populate('book')
     .exec((err, result)=>{
@@ -45,7 +45,7 @@ var getLoanedBooks = (req, res) => {
     })
 }
 
-var issueBook = (req, res) => {
+const issueBook = (req, res) => {
     Book.findById(req.body.bid)
     .populate('available_copies')
     .exec((err, result)=>{
@@ -56,7 +56,7 @@ var issueBook = (req, res) => {
         let book_issued = false;
         for(bookcopy of result.available_copies){
             if(bookcopy.status == true){
-                var date = moment().format('MM/DD/YYYY HH:mm');
+                let date = moment().format('MM/DD/YYYY HH:mm');
                 Bookcopy.findOneAndUpdate(
                     {_id: bookcopy.id},
                     {$set: {borrower: req.user.id, borrow_date: date, status: false}},
@@ -81,7 +81,7 @@ var issueBook = (req, res) => {
     // Optionally redirect to page or display on same
 }
 
-var searchBooks = (req, res) => {
+const searchBooks = (req, res) => {
     // TODO: extract search details
     // query book model on these details
     // render page with the above details
@@ -104,7 +104,7 @@ var searchBooks = (req, res) => {
     })
 }
 
-let returnBook = async(req, res)=>{
+const returnBook = async(req, res)=>{
     const index = req.user.loaned_books.indexOf(req.body.bcid);
     if(index != -1){
         req.user.loaned_books.splice(index, 1);
@@ -119,7 +119,7 @@ let returnBook = async(req, res)=>{
     else {return res.redirect("/error")}
 }
 
-let error = (req, res)=>{
+const error = (req, res)=>{
     return res.render("error", {title: "Error"});
 }
 

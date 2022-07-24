@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
-var mongoose = require("mongoose");
-var passport = require("passport");
-var auth = require("./controllers/auth");
-var store = require("./controllers/store");
-var User = require("./models/user");
-var localStrategy = require("passport-local");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const auth = require("./controllers/auth");
+const store = require("./controllers/store");
+const User = require("./models/user");
+const localStrategy = require("passport-local");
 //importing the middleware object to use its functions
-var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
-var port = process.env.PORT || 3000;
+const middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
+const port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 

@@ -1,4 +1,4 @@
-var middlewareObj={};
+const middlewareObj={};
 //middleware object to check if logged in
 middlewareObj.isLoggedIn=function(req,res,next){
     /*

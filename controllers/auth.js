@@ -1,7 +1,7 @@
 const User = require("../models/user");
-var passport = require("passport");
+const passport = require("passport");
 
-var getLogin = (req, res) => {
+const getLogin = (req, res) => {
   //TODO: render login page
   if(req.user){
     res.redirect("/")
@@ -13,7 +13,7 @@ var getLogin = (req, res) => {
 
 // TODO: authenticate using passport
 // On successful authentication, redirect to next page
-var postLogin = function(req, res, next) {
+const postLogin = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return res.redirect("/error");
@@ -31,13 +31,13 @@ var postLogin = function(req, res, next) {
 };
 
 
-var logout = (req, res) => {
+const logout = (req, res) => {
   // TODO: write code to logout user and redirect back to the page
   req.logout();
   res.redirect('/');
 };
 
-var getRegister = (req, res) => {
+const getRegister = (req, res) => {
   // TODO: render register page
   if(req.user){
     res.redirect("/")
@@ -47,7 +47,7 @@ var getRegister = (req, res) => {
   }
 };
 
-var postRegister = (req, res)=>{
+const postRegister = (req, res)=>{
     const user=req.body.username,
     pass1=req.body.password,
     pass2=req.body.password2;

@@ -1,6 +1,6 @@
-var mongoose=require("mongoose");
+const mongoose=require("mongoose");
 //DEFINING THE BOOK  COPIES MODEL
-var bookCopySchema=new mongoose.Schema({
+const bookCopySchema=new mongoose.Schema({
     //TODO: DEFINE the following attributes-
     book:  { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
     status: Boolean,  //available status
