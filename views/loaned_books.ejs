@@ -1,8 +1,8 @@
 <html>
   <%- include ("./partials/header.ejs", {title: "Loaned Books"}) %>
   <body>
+    <%- include ("./partials/sidebar.ejs") %>
     <h3>Loaned Books list</h3>
-
     <table class="table">
       <thead>
         <tr>
@@ -17,7 +17,7 @@
       <tbody>
         <% books.forEach(function(copy,i){%>
         <tr>
-          <th scope="row"><%= i %></th>
+          <th scope="row"><%= i+1 %></th>
           <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
           <td><%= copy.book.author %></td>
           <td><%= copy.book.genre %></td>

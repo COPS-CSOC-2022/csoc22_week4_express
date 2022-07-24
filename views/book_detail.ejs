@@ -1,10 +1,9 @@
 <html>
   <%- include ("./partials/header.ejs", {title: "Book Detail"}) %>
-
   <body>
+    <%- include ("./partials/sidebar.ejs") %>
     <div class="container-fluid">
       <div class="row">
-        <%- include ("./partials/sidebar.ejs") %>
         <div class="col-sm-10">
           <h2>Title: <%= book.title %></h2>
 

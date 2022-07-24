@@ -7,7 +7,7 @@ let bookCopySchema = new mongoose.Schema({
     status: Boolean,
     borrow_date: {
         type: Date,
-        default: () => Date.now(),
+        default: null,
     },
     borrower: {
         type: mongoose.Schema.Types.ObjectId,

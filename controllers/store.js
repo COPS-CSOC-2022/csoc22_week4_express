@@ -65,6 +65,7 @@ const setup = async () => {
 }
 
 const getAllBooks = async (req, res) => {
+	// await setup()
 	const books = await Book.find()
 	res.render('book_list', { books: books })
 }
@@ -84,12 +85,13 @@ const issueBook = async (req, res) => {
 	const book = await Book.findById(req.body.bid)
 	const loaned_book_id = book.available_copies.pop()
 	await book.save()
+	user.loaned_books.push(mongoose.Types.ObjectId(loaned_book_id))
+	await user.save()
 	const bookInstance = await BookCopy.findById(loaned_book_id)
 	bookInstance.status = true
 	bookInstance.borrower = user._id
+	bookInstance.borrow_date = Date.now()
 	await bookInstance.save()
-	user.loaned_books.push(mongoose.Types.ObjectId(loaned_book_id))
-	await user.save()
 	res.redirect(`/books`)
 }
 
@@ -100,6 +102,7 @@ const returnBook = async (req, res) => {
 	await user.save()
 	bookInstance.status = false
 	bookInstance.borrower = null
+	bookInstance.borrow_date = null
 	const book = await Book.findById(bookInstance.book)
 	await bookInstance.save()
 	book.available_copies.push(mongoose.Types.ObjectId(req.body.bid))
@@ -108,7 +111,6 @@ const returnBook = async (req, res) => {
 }
 
 const searchBooks = async (req, res) => {
-	console.log(req.body.title, req.body.author, req.body.genre)
 	const books = await Book.find({
 		title: { $regex: `.*${req.body.title}.*`, $options: 'i' },
 		author: { $regex: `.*${req.body.author}.*`, $options: 'i' },

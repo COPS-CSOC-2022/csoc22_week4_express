@@ -1,4 +1,5 @@
 const express         = require("express");
+const flash           = require("express-flash");
 const app             = express();
 const mongoose        = require("mongoose");
 const passport        = require("passport");
@@ -28,9 +29,10 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
+app.use(flash());
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.path = req.path;
   next();
 });
 
