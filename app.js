@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
-var mongoose = require("mongoose");
-var passport = require("passport");
-var auth = require("./controllers/auth");
-var store = require("./controllers/store");
-var User = require("./models/user");
-var localStrategy = require("passport-local");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const auth = require("./controllers/auth");
+const store = require("./controllers/store");
+const User = require("./models/user");
+const localStrategy = require("passport-local");
 //importing the middleware object to use its functions
-var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
-var port = process.env.PORT || 3000;
+const middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
+const port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 
@@ -37,7 +37,16 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
-
+const dbURI = require("./config.js").dbURI;
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+})
+  .then((result) => console.log("connected to db"))
+  .catch((err) => console.log(err));
+  
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
 });
@@ -52,17 +61,20 @@ app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
-app.get("/books/loaned",
+app.get("/error", store.error);
+
+app.get("/books/loaned", middleware.isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
  store.getLoanedBooks);
 
-app.post("/books/issue", 
+app.post("/books/issue", middleware.isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post("/return-book", middleware.isLoggedIn, store.returnBook);
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
@@ -78,7 +90,7 @@ app.get("/register", auth.getRegister);
 
 app.post("/register", auth.postRegister);
 
-app.get("/logout", auth.logout);
+app.get("/logout", middleware.isLoggedIn, auth.logout);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);
