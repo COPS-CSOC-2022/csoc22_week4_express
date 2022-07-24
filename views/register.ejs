@@ -1,0 +1,23 @@
+<html>
+  <%- include ("./partials/header.ejs") %>
+  <body>
+    <%- include ("./partials/sidebar.ejs") %>
+    <form method="post" action="/register">
+        <label for="username">Username:</label>
+        <input type="text" required name="username" placeholder="username"
+        value="<%= typeof username != 'undefined' ? username: '' %>"><br>
+        
+        <label for="password1">Password:</label>
+        <input type="password" required name="password" placeholder="password"
+        value="<%= typeof password != 'undefined' ? password: '' %>"><br>
+        
+        <label for="password2">Confirm Password:</label>
+        <input type="password" required name="password2" placeholder="Confirm password"
+        value="<%= typeof password2 != 'undefined' ? password2: '' %>"><br>
+        
+        <button type="submit">register</button>
+    </form>
+    <%- include ("./partials/message.ejs") %>
+    <p>Existing user: <a href="/login">login</a></p>
+  </body>
+</html>

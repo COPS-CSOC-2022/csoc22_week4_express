@@ -39,7 +39,7 @@
             <tbody>
               <% books.forEach(function(book,i){%>
               <tr>
-                <th scope="row"><%=i %></th>
+                <th scope="row"><%=i+1 %></th>
                 <td><a href="/book/<%=book.id%>/"><%= book.title %></a></td>
                 <td><%=book.author%></td>
                 <td><%=book.genre%></td>
