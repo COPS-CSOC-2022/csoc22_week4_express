@@ -1,0 +1,27 @@
+<html lang="en">
+    <%- include ("./partials/header.ejs") %>
+<body>
+    <div class="row">
+        <%- include ("./partials/sidebar.ejs") %>
+      </div>
+    <h2>Register Here:</h2>
+    <form action="/register" method="POST">
+        <label for="F_Name">First Name:</label>
+        <input type="text" name="F_Name" id="F_Name" placeholder="First Name" />
+        <br>
+        <label for="L_Name">Last Name:</label>
+        <input type="text" name="L_Name" id="L_Name" placeholder="Last Name" />
+        <br>
+        <label for="username">User Name:</label>
+        <input type="text" name="username" id="username" placeholder="Username" />
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="password" />
+        <br>
+        <label for="conf_password">Confirm Password:</label>
+        <input type="password" name="conf_password" id="conf_password" placeholder="confirm password" />
+        <br>
+        <button type="submit" >Submit</button>
+    </form>
+</body>
+</html>
