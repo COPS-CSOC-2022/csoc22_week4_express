@@ -1,0 +1,23 @@
+<html lang="en">
+    <%- include ("./partials/header.ejs") %>
+
+<h1>Register</h1>
+<form action="/register" method="POST">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" required="true">
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required="true">
+    </div>
+    <div>
+        <label for="name">Username</label>
+        <input type="text" name="username" id="username" required="true">
+    </div>
+    <div>
+        <label for="name">Password</label>
+        <input type="password" name="password" id="password" required="true">
+    </div>
+    <button type="Register">Register</button>
+</form>
