@@ -10,13 +10,13 @@
 
           <form class="row" action="/books/search-book" method="POST">
             <div class="col-sm-3">
-              Title: <input type="text" name="title" id="title" />
+              Title: <input type="text" name="title" id="title" required="true"/>
             </div>
             <div class="col-sm-3">
-              Author: <input type="text" name="author" id="author" />
+              Author: <input type="text" name="author" id="author" required="true" />
             </div>
             <div class="col-sm-3">
-              Genre: <input type="text" name="genre" id="genre" />
+              Genre: <input type="text" name="genre" id="genre"  required="true"/>
             </div>
             <div class="col-sm-12 pt-2">
               <button id="search_button" class="btn btn-primary" type="submit">
