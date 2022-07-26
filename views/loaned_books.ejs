@@ -1,6 +1,7 @@
 <html>
   <%- include ("./partials/header.ejs") %>
   <body>
+    <div class="row"><%- include ("./partials/sidebar.ejs") %></div>
     <h3>Loaned Books list</h3>
 
     <table class="table">
@@ -24,6 +25,10 @@
           <td><%= copy.borrow_date %></td>
           <td>
             <!-- TODO: Create a Return book tag that is used for returning the book -->
+            <form action="/books/return" method="POST">
+              <input type="text" hidden value="<%= copy._id %>" name="bid" />
+              <button type="return">Return <%= copy.book.title %></button>
+            </form>
           </td>
         </tr>
         <%})%>
