@@ -1,5 +1,6 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+<%- include ("./partials/header.ejs") %>
+
   <body>
     <h3>Loaned Books list</h3>
 
@@ -16,18 +17,35 @@
       </thead>
       <tbody>
         <% books.forEach(function(copy,i){%>
-        <tr>
-          <th scope="row"><%= i %></th>
-          <td><a href="/book/<%=copy.book.id%>/"><%= copy.book.title %></a></td>
-          <td><%= copy.book.author %></td>
-          <td><%= copy.book.genre %></td>
-          <td><%= copy.borrow_date %></td>
-          <td>
-            <!-- TODO: Create a Return book tag that is used for returning the book -->
-          </td>
-        </tr>
-        <%})%>
+          <tr>
+            <th scope="row">
+              <%= i %>
+            </th>
+            <td><a href="/book/<%=copy.book.id%>/">
+                <%= copy.book.title %>
+              </a></td>
+            <td>
+              <%= copy.book.author %>
+            </td>
+            <td>
+              <%= copy.book.genre %>
+            </td>
+            <td>
+              <%= copy.borrow_date %>
+            </td>
+            <td>
+              <!-- TODO: Create a Return book tag that is used for returning the book -->
+              <form action="/books/books-return" method="POST">
+                <input type="text" hidden value="<%= copy.book.id %>" name="bid" />
+                <button class="btn  btn-primary " id="return-button" type="submit" style="font-size:1.3rem;">
+                  Return <%= copy.book.title %>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <%})%>
       </tbody>
     </table>
   </body>
+
 </html>

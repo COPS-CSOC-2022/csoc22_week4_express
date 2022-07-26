@@ -1,16 +1,23 @@
-const express = require("express");
 const app = express();
-var mongoose = require("mongoose");
+const express = require("express");
 var passport = require("passport");
-var auth = require("./controllers/auth");
+var mongoose = require("mongoose");
 var store = require("./controllers/store");
-var User = require("./models/user");
+var auth = require("./controllers/auth");
 var localStrategy = require("passport-local");
+var User = require("./models/user");
+const session = require('express-session');
+const flash = require('connect-flash');
+
+
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
 var port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
+
+// passport config
+require('./config/passport')(passport)
 
 /*  CONFIGURE WITH PASSPORT */
 app.use(
@@ -20,13 +27,14 @@ app.use(
     saveUninitialized: false,
   })
 );
-
+// Connect flash
+app.use(flash());
 app.use(passport.initialize()); //middleware that initialises Passport.
 app.use(passport.session());
-passport.use(new localStrategy(User.authenticate())); //used to authenticate User model with passport
 passport.serializeUser(User.serializeUser()); //used to serialize the user for the session
 passport.deserializeUser(User.deserializeUser()); // used to deserialize the user
 
+// app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true })); //parses incoming url encoded data from forms to json objects
 app.set("view engine", "ejs");
 
@@ -37,38 +45,54 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+// DB Config
+// const db = require('./config/keys') .mongoURI;
+
+// Connect to MongoDB
+mongoose.connect('mongodb+srv://kakashi_2003:papunila@cluster0.5nfwbkv.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB Connected'))
+  .catch((err) => console.log('MongoDB Not Connected'));
+
+// Express session 
+
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
 
 app.get("/", (req, res) => {
-  res.render("index", { title: "Library" });
+  res.render("index", { title: "Kakashi_library" });
 });
 
-/*-----------------Store ROUTES
-TODO: Your task is to complete below controllers in controllers/store.js
-If you need to add any new route add it here and define its controller
-controllers folder.
-*/
+
 
 app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+  middleware.LoggedIn,//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  store.getLoanedBooks);
 
-app.post("/books/issue", 
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-store.issueBook);
+app.post("/books/issue",
+  middleware.LoggedIn,//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
-/* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post("/books/books-return", store.returnBooks);
 
-/*-----------------AUTH ROUTES
-TODO: Your task is to complete below controllers in controllers/auth.js
-If you need to add any new route add it here and define its controller
-controllers folder.
-*/
+// Global variables
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
 
 app.get("/login", auth.getLogin);
 
@@ -77,6 +101,7 @@ app.post("/login", auth.postLogin);
 app.get("/register", auth.getRegister);
 
 app.post("/register", auth.postRegister);
+
 
 app.get("/logout", auth.logout);
 
