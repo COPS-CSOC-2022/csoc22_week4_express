@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./partials/header") %>
+
+    <body>
+        <%- include ("./partials/sidebar.ejs") %>
+            <div class="row mt-5">
+                <div class="col-md-6 m-auto">
+                    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                        <h1 class="text-center mb-3">
+                            <i class="fas fa-user-plus"></i> Register
+                        </h1>
+
+                        <%- include ("./partials/messages") %>
+                            <form action="/register" method="POST">
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" name="username" class="form-control"
+                                        placeholder="Enter Username"
+                                        value="<%= typeof username != 'undefined' ? username : '' %>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" class="form-control"
+                                        placeholder="Enter Email"
+                                        value="<%= typeof email != 'undefined' ? email : '' %>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control"
+                                        placeholder="Create Password"
+                                        value="<%= typeof password != 'undefined' ? password : '' %>" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password2">Confirm Password</label>
+                                    <input type="password" id="password2" name="password2" class="form-control"
+                                        placeholder="Confirm Password"
+                                        value="<%= typeof password2 != 'undefined' ? password2 : '' %>" required />
+                                </div>
+                                <button type="submit" class="btn btn-light btn-block" style="font-size:1.3rem;">
+                                    Register
+                                </button>
+                            </form>
+                            <p class="lead mt-4">If account doesnot exist Click here <a href="/login"
+                                    style="color:white;">Login</a></p>
+                    </div>
+                </div>
+            </div>
+
+
+
+    </body>
+
+</html>
