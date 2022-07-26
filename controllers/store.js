@@ -1,7 +1,7 @@
+var User = require("../models/user");
 var Book = require("../models/book");
 var Bookcopy = require("../models/bookCopy");
 var mongoose = require("mongoose");
-var User = require("../models/user");
 
 
 var getAllBooks = (req, res) => {
