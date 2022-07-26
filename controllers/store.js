@@ -105,14 +105,14 @@ var issueBook = (req, res) => {
             User.findByIdAndUpdate(ObjectId(userId), {
                 $push: { loaned_books: ObjectId(bookCopyId) }
             })
-                .then(res => console.log("User information updated successfully. "))
+                .then(res => {
+                    console.log("User information updated successfully. ");
+                    req.flash('successMessage', 'The book has been successfully issued to you.');
+                    res.redirect('/books/loaned');
+                })
                 .catch(err => console.log(err.message));
         }
     })
-
-    req.flash('successMessage', 'The book has been successfully issued to you.');
-    res.redirect('/books/loaned');
-
 }
 
 var searchBooks = (req, res) => {

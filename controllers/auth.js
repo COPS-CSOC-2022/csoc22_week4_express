@@ -18,6 +18,7 @@ var postLogin = (req, res, next) => {
     });
   }
 
+  req.flash('errorMessage', '');
   passport.authenticate('local', function (err, user, info) {
     if (err) console.log(err);
     if (!user)
@@ -55,41 +56,29 @@ var postRegister = (req, res) => {
 
     /* Check all fields must be entered */
     if (!password || !username || !confirmPassword) {
-      res.render('register', {
-        title: 'Register',
-        errorMessage: 'Please enter all fields.'
-      });
-      return;
+      req.flash('errorMessage', 'Please enter all fields.');
+      return res.redirect('/register');
     }
 
     /* Checks if the username is unique */
     passwordValidators.doesUsernameExists(username).then((usernameExists) => {
       if (!usernameExists[0]) {
-        res.render('register', {
-          title: 'Register',
-          errorMessage: usernameExists[1]
-        });
-        return;
+        req.flash('errorMessage', usernameExists[1]);
+        return res.redirect('/register');
       }
     });
 
     /* Check if the password is strong */
     let strongPassword = passwordValidators.isStrongPassword(password);
     if (!strongPassword[0]) {
-      res.render('register', {
-        title: 'Register',
-        errorMessage: strongPassword[1]
-      });
-      return;
+      req.flash('errorMessage', strongPassword[1]);
+      return res.redirect('/register');
     }
 
     /* Checks if the passwords are matching */
     if (password != confirmPassword) {
-      res.render('register', {
-        title: 'Register',
-        errorMessage: 'Password and Confirm Password are not same!'
-      });
-      return;
+      req.flash('errorMessage', 'Password and Confirm Password are not same!');
+      return res.redirect('/register');
     }
 
     /* Saving the user to the database */
