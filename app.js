@@ -29,7 +29,6 @@ app.use(
 app.use(flash());
 app.use(passport.initialize()); //middleware that initialises Passport.
 app.use(passport.session());
-// passport.use(new localStrategy(User.authenticate())); //used to authenticate User model with passport
 passport.serializeUser(User.serializeUser()); //used to serialize the user for the session
 passport.deserializeUser(User.deserializeUser()); // used to deserialize the user
 
