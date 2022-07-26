@@ -107,11 +107,12 @@ var issueBook = (req, res) => {
             })
                 .then(res => {
                     console.log("User information updated successfully. ");
-                    req.flash('successMessage', 'The book has been successfully issued to you.');
-                    res.redirect('/books/loaned');
                 })
                 .catch(err => console.log(err.message));
         }
+    }).then(_ => {
+        req.flash('successMessage', 'The book has been successfully issued to you.');
+        res.redirect('/books/loaned');
     })
 }
 
