@@ -66,7 +66,6 @@ var issueBook = (req, res) => {
         if (book!==null) {
             if (book) {
                 if (book.available_copies) {
-                    console.log("issue:\n",book);
                     Book.updateOne(
                         { _id: bookId }, 
                         { available_copies: book.available_copies - 1 }, 
