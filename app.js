@@ -1,13 +1,15 @@
-const express = require("express");
 const app = express();
-var mongoose = require("mongoose");
+const express = require("express");
 var passport = require("passport");
-var auth = require("./controllers/auth");
+var mongoose = require("mongoose");
 var store = require("./controllers/store");
-var User = require("./models/user");
+var auth = require("./controllers/auth");
 var localStrategy = require("passport-local");
-const flash = require('connect-flash');
+var User = require("./models/user");
 const session = require('express-session');
+const flash = require('connect-flash');
+
+
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
 var port = process.env.PORT || 3000;
