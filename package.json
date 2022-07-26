@@ -1,25 +1,37 @@
 {
   "name": "csoc-2022-task4",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A library app built in Node with Express and MongoDB.",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
-  "author": "",
+  "author": "EshaanAgg",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "express-flash": "^0.0.2",
     "express-session": "^1.17.2",
-    "mongoose": "^5.13.2",
+    "mongoose": "^5.13.14",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EshaanAgg/csoc22_week4_express.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/EshaanAgg/csoc22_week4_express/issues"
+  },
+  "homepage": "https://github.com/EshaanAgg/csoc22_week4_express#readme"
 }

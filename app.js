@@ -1,85 +1,87 @@
 const express = require("express");
 const app = express();
-var mongoose = require("mongoose");
-var passport = require("passport");
-var auth = require("./controllers/auth");
-var store = require("./controllers/store");
-var User = require("./models/user");
-var localStrategy = require("passport-local");
-//importing the middleware object to use its functions
-var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
+const mongoose = require("mongoose");
+const passport = require("passport");
+const flash = require('express-flash');
+const session = require('express-session');
+
+// const initializeBooks = require('./utils/initializeBooks');
+const initializePassport = require('./config/passport-config');
+
+const storeRoutes = require("./routes/storeRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 var port = process.env.PORT || 3000;
 
+/* Express, session and flash configuration */
 app.use(express.static("public"));
-
-/*  CONFIGURE WITH PASSPORT */
 app.use(
-  require("express-session")({
-    secret: "decryptionkey", //This is the secret used to sign the session ID cookie.
+  session({
+    secret: 'decryptionKey',
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000
+    },
     resave: false,
     saveUninitialized: false,
   })
 );
+app.use(flash());
+app.use(express.static(__dirname + '/public'));
 
-app.use(passport.initialize()); //middleware that initialises Passport.
+/* Passport Configuration */
+initializePassport(passport);
+app.use(passport.initialize());                           // Middleware that initializes Passport
 app.use(passport.session());
-passport.use(new localStrategy(User.authenticate())); //used to authenticate User model with passport
-passport.serializeUser(User.serializeUser()); //used to serialize the user for the session
-passport.deserializeUser(User.deserializeUser()); // used to deserialize the user
 
-app.use(express.urlencoded({ extended: true })); //parses incoming url encoded data from forms to json objects
+
+/* URL Encoding and EJS Configurations */
+app.use(express.urlencoded({ extended: true }));          // Parses incoming URL encoded data from forms to JSON objects
 app.set("view engine", "ejs");
 
-//THIS MIDDLEWARE ALLOWS US TO ACCESS THE LOGGED IN USER AS currentUser in all views
+
+/* Middleware to access the logged in user as currentUser in all views */
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
   next();
 });
 
-/* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
 
+/* Connect to the database  */
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
+  .then((result) => {
+    console.log("Connected to the database.");
+    app.listen(port, () => {
+      console.log(`App listening on port ${port}!`);
+    });
+  })
+  .catch((err) => {
+    console.log("Connection to database failed.");
+    console.log(err);
+  });
+
+
+/* Defining the routes for the app */
 app.get("/", (req, res) => {
-  res.render("index", { title: "Library" });
+  res.render("index", {
+    title: "Library",
+    errorMessage: req.flash('errorMessage'),
+    successMessage: req.flash('successMessage')
+  });
 });
+app.use("/books", storeRoutes);
+app.use(authRoutes);
+// app.use("/initializeBooks", initializeBooks.initializeBooks);
 
-/*-----------------Store ROUTES
-TODO: Your task is to complete below controllers in controllers/store.js
-If you need to add any new route add it here and define its controller
-controllers folder.
-*/
-
-app.get("/books", store.getAllBooks);
-
-app.get("/book/:id", store.getBook);
-
-app.get("/books/loaned",
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
-
-app.post("/books/issue", 
-//TODO: call a function from middleware object to check if logged in (use the middleware object imported)
-store.issueBook);
-
-app.post("/books/search-book", store.searchBooks);
-
-/* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
-
-/*-----------------AUTH ROUTES
-TODO: Your task is to complete below controllers in controllers/auth.js
-If you need to add any new route add it here and define its controller
-controllers folder.
-*/
-
-app.get("/login", auth.getLogin);
-
-app.post("/login", auth.postLogin);
-
-app.get("/register", auth.getRegister);
-
-app.post("/register", auth.postRegister);
-
-app.get("/logout", auth.logout);
-
-app.listen(port, () => {
-  console.log(`App listening on port ${port}!`);
-});
+/* A default route added at the last to handle non-existent routes */
+app.use((req, res) => {
+  res.status(404);
+  res.send(`Error 404 : ${req.url} Not Found`);
+})

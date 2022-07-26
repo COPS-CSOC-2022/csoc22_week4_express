@@ -1,56 +1,97 @@
 <html>
-  <%- include ("./partials/header.ejs") %>
+<%- include ("./partials/header.ejs") %>
+  <%- include ("./partials/sidebar.ejs") %>
 
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <%- include ("./partials/sidebar.ejs") %>
-        <div class="col-sm-10">
-          <h3>Books list</h3>
+    <body>
+      <%- include('./partials/alerts') %>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-10">
+              <h3>Books list</h3>
+              <br>
 
-          <form class="row" action="/books/search-book" method="POST">
-            <div class="col-sm-3">
-              Title: <input type="text" name="title" id="title" />
-            </div>
-            <div class="col-sm-3">
-              Author: <input type="text" name="author" id="author" />
-            </div>
-            <div class="col-sm-3">
-              Genre: <input type="text" name="genre" id="genre" />
-            </div>
-            <div class="col-sm-12 pt-2">
-              <button id="search_button" class="btn btn-primary" type="submit">
-                Search
-              </button>
-            </div>
-          </form>
+              <form class="row" action="/books/search-book" method="POST">
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Genre</th>
-                <th scope="col">Rating</th>
-                <th scope="col">MRP</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% books.forEach(function(book,i){%>
-              <tr>
-                <th scope="row"><%=i %></th>
-                <td><a href="/book/<%=book.id%>/"><%= book.title %></a></td>
-                <td><%=book.author%></td>
-                <td><%=book.genre%></td>
-                <td><%=book.rating%></td>
-                <td><%=book.mrp%></td>
-              </tr>
-              <%})%>
-            </tbody>
-          </table>
+                <div class="col-sm-3">
+                  Title: <br><input type="text" name="title" id="title" />
+                </div>
+
+                <div class="col-sm-3">
+                  Author: <br><input type="text" name="author" id="author" />
+                </div>
+
+                <div class="col-sm-3">
+                  Genre: <br><input type="text" name="genre" id="genre" />
+                </div>
+                <br>
+                <div class="col-sm-12 pt-2">
+                  <button id="search_button" class="btn btn-primary" type="submit">
+                    Search
+                  </button>
+                  <button id="clear_button" class="btn btn-warning" onclick="clearFields()">
+                    Clear Filters
+                  </button>
+                </div>
+              </form>
+              <br>
+              <table class="table table-dark table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">MRP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (books.length==0) { %>
+                    <td colspan="6">
+                      <center>
+                        <h4>No books found.</h4>
+                      </center>
+                    </td>
+                    <% } else { %>
+                      <% books.forEach(function(book,i){%>
+                        <tr>
+                          <th scope="row">
+                            <%=i+1 %>
+                          </th>
+                          <td><a href="/books/<%=book.id%>" class="link-light">
+                              <%= book.title %>
+                            </a></td>
+                          <td>
+                            <%=book.author%>
+                          </td>
+                          <td>
+                            <%= book.genreString %>
+                          </td>
+                          <td>
+                            <%=book.rating%>
+                          </td>
+                          <td>
+                            <%=book.mrp%>
+                          </td>
+                        </tr>
+                        <%})%>
+                          <%}%>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </body>
+    </body>
+    <script>
+      function clearFields() {
+        var field1 = document.getElementById('author');
+        field1.value = "";
+        var field2 = document.getElementById('title');
+        field2.value = "";
+        var field3 = document.getElementById('genre');
+        field3.value = "";
+      }
+    </script>
+
 </html>
