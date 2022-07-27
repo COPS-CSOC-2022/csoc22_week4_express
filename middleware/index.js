@@ -1,11 +1,20 @@
 var middlewareObj={};
-//middleware object to check if logged in
-middlewareObj.isLoggedIn=function(req,res,next){
-	/*
-    TODO: Write function to check if user is logged in.
-    If user is logged in: Redirect to next page
-    else, redirect to login page
-    */
-	}
+const LocalStrategy = require('passport-local').Strategy;
+const userModel = require('../models/user');
 
-    module.exports=middlewareObj;
+//middleware object to check if logged in
+middlewareObj.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+      return res.redirect("/login");
+    }
+    next();
+}
+
+// middlewareObj.userIsLoggedOut=function(req, res, next) {
+//     if (!req.isAuthenticated()) {
+//         return next();
+//     }
+//     res.redirect('/');      
+// }
+
+module.exports=middlewareObj;

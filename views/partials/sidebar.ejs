@@ -4,13 +4,14 @@
     <li><a href="/books">All books</a></li>
   </ul>
 
-  <ul class="sidebar-nav">
+ <ul class="sidebar-nav">
     <% if (currentUser){ %>
     <li>User: <%= currentUser.username %></li>
     <li><a href="/books/loaned">My Borrowed</a></li>
     <li><a href="/logout">Logout</a></li>
     <% } else { %>
     <li><a href="/login">Login</a></li>
+    <li><a href="/register">Register</a></li>  
     <% } %>
   </ul>
 </div>
