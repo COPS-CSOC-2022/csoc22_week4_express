@@ -11,22 +11,15 @@ var getAllBooks = (req, res) => {
 const getBook =async(req, res) => {
     //TODO: access the book with a given id and render book detail page
      let book=await books.findById(req.params.id)
-     res.render("book_detail",{book,title: book.title})    
-
-}
-
+     res.render("book_detail",{book,title: book.title})    }
 var getLoanedBooks = (req, res) => {
-
-    //TODO: access the books loaned for this user and render loaned books page
+//TODO: access the books loaned for this user and render loaned books page
 }
-
 var issueBook = (req, res) => {
-    
-} 
+    } 
+
 const searchBooks = async(req, res) => {
-    // TODO: extract search details
-    // query book model on these details
-    // render page with the above details
+    
      let book1=await books.find()
       book1.forEach(function(book){
       let str1=book.title.toLowerCase();   //user can input in lowercase or uppercase or even mixed characters so converting to lower case
@@ -51,7 +44,9 @@ const searchBooks = async(req, res) => {
      else if(str5==str6){
         res.render("book_detail",{book,title: book.title})   
          
-    }    
+    }   // TODO: extract search details
+    // query book model on these details
+    // render page with the above details 
  })
 }
 
