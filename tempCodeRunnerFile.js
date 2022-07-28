@@ -1,0 +1,1 @@
+require("./config_pass/passport-config")(passport)
