@@ -6,7 +6,6 @@ let auth = require("./controllers/auth");
 let store = require("./controllers/store");
 let User = require("./models/user");
 let localStrategy = require("passport-local");
-const flash = require('connect-flash');
 const session = require('express-session');
 
 
@@ -18,7 +17,7 @@ var port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 /*  CONFIGURE WITH PASSPORT */
-require("./config_pass/passport-config")(passport)
+
 
 
 app.use(
@@ -98,13 +97,7 @@ controllers folder.
 app.get("/login", auth.getLogin);
 
 
-app.post("/login",passport.authenticate("local", 
-{
-    failureRedirect: "/login",
-    failureMessage: true,
-    keepSessionInfo: true,
-  }),auth.postLogin
-);
+app.post("/login",passport.authenticate("local", {failureRedirect: "/login",failureMessage: true,keepSessionInfo: true,}),auth.postLogin);
 
 app.get("/register", auth.getRegister);
 

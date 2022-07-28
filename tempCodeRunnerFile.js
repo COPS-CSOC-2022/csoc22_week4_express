@@ -1,1 +1,1 @@
-/book/:id"
+require("./config_pass/passport-config")(passport)

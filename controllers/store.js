@@ -22,18 +22,13 @@ var getLoanedBooks = (req, res) => {
 
 var issueBook = (req, res) => {
     
-   
-}
-
-//return_book
-
+} 
 const searchBooks = async(req, res) => {
     // TODO: extract search details
     // query book model on these details
     // render page with the above details
-    
-    let book1=await books.find()
-    book1.forEach(function(book){
+     let book1=await books.find()
+      book1.forEach(function(book){
       let str1=book.title.toLowerCase();   //user can input in lowercase or uppercase or even mixed characters so converting to lower case
       let str2=req.body.title.toLowerCase();
       let str3=book.author.toLowerCase();   //user can input in lowercase or uppercase or even mixed characters so converting to lower case
