@@ -8,7 +8,9 @@ var User = require("./models/user");
 var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
+const { isLoggedIn } = require("./middleware");
 var port = process.env.PORT || 3000;
+const mongoUrl = require("./config/keys").mongoUrl
 
 app.use(express.static("public"));
 
@@ -37,6 +39,16 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+mongoose.Promise = global.Promise;
+
+mongoose.connect(mongoUrl, 
+  {useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+  })
+  .then(() => console.log('connection successful'))
+  .catch((err) => console.log(err));
+
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -52,17 +64,18 @@ app.get("/books", store.getAllBooks);
 
 app.get("/book/:id", store.getBook);
 
-app.get("/books/loaned",
+app.get("/books/loaned",isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
  store.getLoanedBooks);
 
-app.post("/books/issue", 
+app.post("/books/issue",isLoggedIn, 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post("/books/return", isLoggedIn, store.returnBooks);
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
