@@ -1,15 +1,13 @@
-<div class="col-sm-2">
-  <ul class="sidebar-nav">
+<div class="col-sm-2 ">
+  <ul class="sidebar-nav p-10 " style="list-style-type: none ;"> 
     <li><a href="/">Home</a></li>
     <li><a href="/books">All books</a></li>
-  </ul>
-
-  <ul class="sidebar-nav">
     <% if (currentUser){ %>
     <li>User: <%= currentUser.username %></li>
     <li><a href="/books/loaned">My Borrowed</a></li>
     <li><a href="/logout">Logout</a></li>
     <% } else { %>
+    <li><a href="/register">Register</a></li>
     <li><a href="/login">Login</a></li>
     <% } %>
   </ul>
