@@ -38,6 +38,12 @@ app.use(function (req, res, next) {
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
 
+const URI = 'mongodb://shivendra:shivendra@csoc-week-4-shard-00-00.adbzt.mongodb.net:27017,csoc-week-4-shard-00-01.adbzt.mongodb.net:27017,csoc-week-4-shard-00-02.adbzt.mongodb.net:27017/library?ssl=true&replicaSet=atlas-ha1xs3-shard-0&authSource=admin&retryWrites=true&w=majority';
+mongoose.connect(URI , {useNewUrlParser: true , useUnifiedTopology:true , useCreateIndex:true , useFindAndModify: false })
+ .then(result => console.log('connected to db'))
+ .catch(err => console.log(err))
+
+
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
 });
@@ -53,16 +59,19 @@ app.get("/books", store.getAllBooks);
 app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
+middleware.isLoggedIn,
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn,
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post("/books/loaned/return", middleware.isLoggedIn, store.returnBook);
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
