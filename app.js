@@ -9,7 +9,6 @@ var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
 var port = process.env.PORT || 3000;
-
 app.use(express.static("public"));
 
 /*  CONFIGURE WITH PASSPORT */
@@ -37,6 +36,16 @@ app.use(function (req, res, next) {
 });
 
 /* TODO: CONNECT MONGOOSE WITH OUR MONGO DB  */
+dbURI = process.env.URL; // taking URL from personal computer too keep it classified then use it as this.
+mongoose.connect(this.dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then((result) => {
+      console.log('Connected to the server');
+      app.listen(port);
+    })
+    .catch((err) => console.log(err));
+////////////////////////////////////////////
+
+
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Library" });
@@ -54,15 +63,18 @@ app.get("/book/:id", store.getBook);
 
 app.get("/books/loaned",
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
- store.getLoanedBooks);
+middleware.isLoggedIn, 
+store.getLoanedBooks);
 
 app.post("/books/issue", 
 //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+middleware.isLoggedIn,
 store.issueBook);
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post('/books/return', store.returnBook);
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js
