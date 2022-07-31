@@ -6,6 +6,13 @@ middlewareObj.isLoggedIn=function(req,res,next){
     If user is logged in: Redirect to next page
     else, redirect to login page
     */
-	}
+    console.log(req.user);
+    if (req.user){ 
+        next();
+        }
+    else {
+        res.redirect('/login');
+        }
+    }
 
     module.exports=middlewareObj;
