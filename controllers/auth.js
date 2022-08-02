@@ -22,54 +22,51 @@ const connectDB = async () => {
 connectDB();
 var getLogin = (req, res) => {
   //TODO: render login page
+
   res.render("login", { title: "Login" });
+  // req.flash("error", "Test case")
 };
 
 var postLogin = (req, res, next) => {
   console.log(req.body.username);
-  if (!req.body.username || !req.body.password)
-   {
+  if (!req.body.username || !req.body.password) {
+    req.flash("error", "Empty case");
     console.log("empty");
-    return res.render('login', {
-      title: 'Login',
-      errorMessage: 'Username or password was not given.'
+    return res.render("login", {
+      title: "Login",
+      errorMessage: "Username or password was not given.",
     });
   }
-  passport.authenticate('local', function (err, user, info) {
-    if (err) 
-    {
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
       console.log(err);
-      return res.render('login', {
-        title: 'Login',
-        errorMessage: 'Err.'
+      return res.render("login", {
+        title: "Login",
+        errorMessage: "Err.",
+      });
+    } else {
+      if (!user) {
+        req.flash("error", "Incorrect case");
+        return res.redirect("/login");
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          console.log(err);
+          console.log("err");
+          return res.render("login", {
+            title: "Login",
+            errorMessage: "Err.",
+          });
+        } else return res.redirect("/books");
       });
     }
-    else
-    {
-    if (!user)
-      return res.render('login', {
-        title: 'Login',
-        errorMessage: 'username or password incorrect'
-      });
-    req.logIn(user, function (err) {
-      if (err)
-      { console.log(err);
-        console.log("err");
-        return res.render('login', {
-          title: 'Login',
-          errorMessage: 'Err.'
-        });
-      }
-      else
-        return res.redirect('/books');
-    });
-  }
   })(req, res, next);
 };
 
 var logout = (req, res) => {
   // TODO: write code to logout user and redirect back to the page
   req.logout();
+  req.flash("error", "Logout");
   res.redirect("/login");
 };
 
@@ -87,16 +84,14 @@ var postRegister = (req, res) => {
   User.register(Users, req.body.password, function (err, user) {
     if (err) {
       // res.redirect("/login");
-      if(err=="UserExistsError")
-      {
+      if (err == "UserExistsError") {
         console.log("lopo");
         return;
+      } else {
+        console.log(err);
+        console.log("Wrong password or username");
+        res.redirect("/register");
       }
-      else{
-      console.log(err);
-      console.log("Wrong password or username");
-      res.redirect("/register");
-    }
     } else {
       passport.authenticate("local")(req, res, () => {
         console.log("Authenticated user.");

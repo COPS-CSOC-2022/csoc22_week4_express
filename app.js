@@ -12,6 +12,7 @@ var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
 var port = process.env.PORT || 3000;
+var flash = require('connect-flash');
 
 app.use(express.static("public"));
 
@@ -32,6 +33,11 @@ passport.deserializeUser(User.deserializeUser()); // used to deserialize the use
 
 app.use(express.urlencoded({ extended: true })); //parses incoming url encoded data from forms to json objects
 app.set("view engine", "ejs");
+app.use(flash());
+app.use(function(req, res, next){
+  res.locals.message = req.flash();
+  next();
+});
 
 //THIS MIDDLEWARE ALLOWS US TO ACCESS THE LOGGED IN USER AS currentUser in all views
 app.use(function (req, res, next) {
