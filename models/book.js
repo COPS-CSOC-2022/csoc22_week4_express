@@ -11,6 +11,10 @@ var bookSchema = new mongoose.Schema({
   rating: { type: Number, required: true, min: 0, max: 5 },
   mrp: Number,
 
-  numbooks: { type: Number, required: true, min: 0, max: 10 },
-});
+  available_copies: {
+    type: Number,
+    required: true,
+    default: 0
+}
+  });
 module.exports = mongoose.model("Book", bookSchema);

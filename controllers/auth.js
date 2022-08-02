@@ -78,6 +78,7 @@ var getRegister = (req, res) => {
   res.render("register", { title: "Register" });
 };
 
+// Error Handling is still left.
 var postRegister = (req, res) => {
   // TODO: Register user to User db using passport
   //On successful authentication, redirect to next page
@@ -85,13 +86,20 @@ var postRegister = (req, res) => {
   Users = new User({ username: req.body.username });
   User.register(Users, req.body.password, function (err, user) {
     if (err) {
-      res.redirect("/login");
+      // res.redirect("/login");
+      if(err=="UserExistsError")
+      {
+        console.log("lopo");
+        return;
+      }
+      else{
       console.log(err);
-      console.log("errppp");
+      console.log("Wrong password or username");
+      res.redirect("/register");
+    }
     } else {
       passport.authenticate("local")(req, res, () => {
         console.log("Authenticated user.");
-        // req.flash('successMessage', 'You have been registered as well as logged in successfully.');
         res.redirect("/");
       });
     }

@@ -4,7 +4,10 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var auth = require("./controllers/auth");
 var store = require("./controllers/store");
-var User = require("./models/user");
+// var User = require("./models/user");
+const Book = require("./models/book");
+const User = require("./models/user");
+const Bookcopy = require("./models/bookCopy");
 var localStrategy = require("passport-local");
 //importing the middleware object to use its functions
 var middleware = require("./middleware"); //no need of writing index.js as directory always calls index.js by default
@@ -44,7 +47,9 @@ const connectDB = async () => {
       "mongodb://monu:monu@cluster0-shard-00-00.fd8mg.mongodb.net:27017,cluster0-shard-00-01.fd8mg.mongodb.net:27017,cluster0-shard-00-02.fd8mg.mongodb.net:27017/?ssl=true&replicaSet=atlas-mu9ebx-shard-0&authSource=admin&retryWrites=true&w=majority";
     const con = await mongoose.connect(mongoDB, {
       useNewUrlParser: true,
+      useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false
     });
 
     console.log(`MongoDB connected : ${con.connection.host}`);
@@ -67,23 +72,27 @@ controllers folder.
 
 app.get("/books", store.getAllBooks);
 
-app.get("/book/:id", store.getBook);
+app.get("/book/:id",middleware.isLoggedIn,store.getBook);
 
 app.get(
   "/books/loaned",
   //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  middleware.isLoggedIn,
   store.getLoanedBooks
 );
 
 app.post(
   "/books/issue",
   //TODO: call a function from middleware object to check if logged in (use the middleware object imported)
+  middleware.isLoggedIn,
   store.issueBook
 );
 
 app.post("/books/search-book", store.searchBooks);
 
 /* TODO: WRITE VIEW TO RETURN AN ISSUED BOOK YOURSELF */
+app.post("/books/return",middleware.isLoggedIn, store.returnBooks);
+
 
 /*-----------------AUTH ROUTES
 TODO: Your task is to complete below controllers in controllers/auth.js

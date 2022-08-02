@@ -1,6 +1,8 @@
 <html>
   <%- include ("./partials/header.ejs") %>
   <body>
+    <%- include ("./partials/sidebar.ejs") %>
+
     <h3>Loaned Books list</h3>
 
     <table class="table">
@@ -11,7 +13,7 @@
           <th scope="col">Author</th>
           <th scope="col">Genre</th>
           <th scope="col">Borrow Date</th>
-          <th scope="col">Return Buttons</th>
+          <th scope="col">Return Button</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +26,13 @@
           <td><%= copy.borrow_date %></td>
           <td>
             <!-- TODO: Create a Return book tag that is used for returning the book -->
+
+            <form action="/books/return" method="POST">
+              <input type="text" hidden value="<%=copy.id %>" name="bcid" />
+              <button class="btn btn-primary" id="return-button" type="submit">
+                Return <%=copy.book.title %>
+              </button>
+            </form>
           </td>
         </tr>
         <%})%>

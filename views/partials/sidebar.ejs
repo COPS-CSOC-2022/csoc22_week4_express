@@ -1,17 +1,50 @@
-<div class="col-sm-2">
-  <ul class="sidebar-nav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/books">All books</a></li>
-  </ul>
+<!-- <div class="col-sm-2"> -->
+<nav
+  class="navbar navbar-expand-lg navbar-light"
+  style="background-color: #e3f2fd"
+>
+  <div class="container">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <ul class="sidebar-nav">
-    <% if (currentUser){ %>
-    <li>User: <%= currentUser.username %></li>
-    <li><a href="/books/loaned">My Borrowed</a></li>
-    <li><a href="/logout">Logout</a></li>
-    <% } else { %>
-    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
-    <% } %>
-  </ul>
-</div>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarSupportedContent"
+    >
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item nav-link">
+          <a href="/">Home</a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="/books">All books</a>
+        </li>
+        <% if (currentUser){ %>
+        <li class="nav-item nav-link">User: <%= currentUser.username %></li>
+        <li class="nav-item nav-link">
+          <a href="/books/loaned">My Borrowed</a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="/logout">Logout</a>
+        </li>
+        <% } else { %>
+        <li class="nav-item nav-link">
+          <a href="/login">Login</a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="/register">Register</a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- </div> -->
