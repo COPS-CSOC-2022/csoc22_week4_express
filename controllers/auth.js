@@ -20,42 +20,32 @@ const connectDB = async () => {
   }
 };
 connectDB();
-var getLogin = (req, res) => {
-  //TODO: render login page
 
+var getLogin = (req, res) => {
   res.render("login", { title: "Login" });
-  // req.flash("error", "Test case")
 };
 
 var postLogin = (req, res, next) => {
   console.log(req.body.username);
-  if (!req.body.username || !req.body.password) {
-    req.flash("error", "Empty case");
-    console.log("empty");
-    return res.render("login", {
-      title: "Login",
-      errorMessage: "Username or password was not given.",
-    });
-  }
   passport.authenticate("local", function (err, user, info) {
     if (err) {
-      console.log(err);
+      console.log(err.message);
+      req.flash("error", err.message);
       return res.render("login", {
         title: "Login",
-        errorMessage: "Err.",
       });
     } else {
       if (!user) {
-        req.flash("error", "Incorrect case");
+        req.flash("error", "Incorrect Username or Password");
         return res.redirect("/login");
       }
       req.logIn(user, function (err) {
         if (err) {
-          console.log(err);
+          console.log(err.message);
           console.log("err");
+          req.flash("error", err.message);
           return res.render("login", {
             title: "Login",
-            errorMessage: "Err.",
           });
         } else return res.redirect("/books");
       });
@@ -75,26 +65,18 @@ var getRegister = (req, res) => {
   res.render("register", { title: "Register" });
 };
 
-// Error Handling is still left.
 var postRegister = (req, res) => {
-  // TODO: Register user to User db using passport
-  //On successful authentication, redirect to next page
   console.log(req.body.username);
   Users = new User({ username: req.body.username });
   User.register(Users, req.body.password, function (err, user) {
     if (err) {
       // res.redirect("/login");
-      if (err == "UserExistsError") {
-        console.log("lopo");
-        return;
-      } else {
-        console.log(err);
-        console.log("Wrong password or username");
-        res.redirect("/register");
-      }
+      console.log(err.message);
+      req.flash("error", err.message);
+      res.redirect("/register");
     } else {
       passport.authenticate("local")(req, res, () => {
-        console.log("Authenticated user.");
+        console.log("User Authenticated.");
         res.redirect("/");
       });
     }
